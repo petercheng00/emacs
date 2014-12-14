@@ -40,6 +40,13 @@
 
 
 ;;;;;;;;;;;;;;;;;;;; utility
+;; company
+(if (not (package-installed-p 'company))
+            (package-install 'company))
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq ‘company-idle-delay’ 0)
+
 ;; minimap
 (require 'minimap)
 
@@ -52,6 +59,8 @@
 ;;;;;;;;;;;;;;;;;;;; keybinds
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
+;; company
+(global-set-key (kbd "M-/") 'company-complete-common)
 ;; shell
 (global-set-key (kbd "C-x x") 'shell)
 ;; windmove

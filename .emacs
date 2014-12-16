@@ -1,4 +1,5 @@
 (add-to-list 'load-path "~/.emacs.d/")
+(package-initialize)
 ;;;;;;;;;;;;;;;;;;;; package managers
 ;; melpa
 (require 'package)
@@ -56,6 +57,9 @@
 ;; ido mode
 (ido-mode t)
 
+;; ibuffer
+(global-set-key (kbd "C-x C-b") 'ibuffer)
+
 ;;;;;;;;;;;;;;;;;;;; keybinds
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -79,7 +83,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(minimap-minimum-width 10)
- '(minimap-mode t)
+ '(minimap-mode f)
  '(minimap-window-location (quote right)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

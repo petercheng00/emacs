@@ -1,10 +1,32 @@
 (add-to-list 'load-path "~/.emacs.d/")
-(package-initialize)
-;;;;;;;;;;;;;;;;;;;; package managers
-;; melpa
+
+;;;;;;;;;;;;;;;;;;;; install packages
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(package-initialize)
+
+(defun ensure-package-installed (&rest packages)
+  "Assure every package is installed, ask for installation if it’s not.
+
+Return a list of installed packages or nil for every skipped package."
+  (mapcar
+   (lambda (package)
+     (if (package-installed-p package)
+         nil
+       (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+           (package-install package)
+         package)))
+   packages))
+
+;; make sure to have downloaded archive description.
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
+(ensure-package-installed 'company 'magit) ;  --> (nil nil) if iedit and magit are already installed
+
+;; activate installed packages
+(package-initialize)
 
 
 ;;;;;;;;;;;;;;;;;;;; appearance
@@ -41,15 +63,8 @@
 
 
 ;;;;;;;;;;;;;;;;;;;; utility
-;; company
-(if (not (package-installed-p 'company))
-            (package-install 'company))
-(require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq ‘company-idle-delay’ 0)
-
-;; minimap
-(require 'minimap)
 
 ;; no backups
 (setq make-backup-files nil)
@@ -75,19 +90,3 @@
  'eshell-mode-hook
  (lambda ()
    (setq pcomplete-cycle-completions nil)))
-
-;;;;;;;;;;;;;;;;;;;; customize-group generated
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(minimap-minimum-width 10)
- '(minimap-mode f)
- '(minimap-window-location (quote right)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(minimap-active-region-background ((t (:background "dim gray")))))

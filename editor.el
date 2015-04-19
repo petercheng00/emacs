@@ -1,4 +1,5 @@
 (require 'uniquify)
+(require 'whitespace)
 
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")
@@ -18,13 +19,21 @@
 ;; line numbers
 (global-linum-mode t)
 (add-hook 'shell-mode-hook (lambda ()
-                             (linum-mode -1)))
+							 (linum-mode -1)))
 
 ;; column number
 (column-number-mode 1)
 
 ;; trailing whitespace
 (setq-default show-trailing-whitespace t)
+
+;; show whitespace characters
+(global-whitespace-mode)
+(setq whitespace-style '(face tab-mark tabs))
+(set-face-attribute 'whitespace-tab nil
+					:background nil
+					:foreground "gray40")
+
 
 ;; cycle backwards without retriggering C-u
 (setq mark-command-repeat-pop t)

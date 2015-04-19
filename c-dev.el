@@ -14,7 +14,9 @@
 (semantic-mode 1)
 
 ;; c++ format
+(setq-default c-basic-offset 4
+	      tab-width 4
+	      indent-tabs-mode t)
+
 (setq c-default-style "linux"
-	  c-basic-offset 4
-	  tab-width 4
-	  indent-tabs-mode t)
+      c-basic-offset 4)

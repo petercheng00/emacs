@@ -21,11 +21,13 @@
 (global-set-key [f9] 'deft)
 
 (global-set-key (kbd "M-.") 'semantic-ia-fast-jump)
+(global-set-key (kbd "M-?") 'semantic-ia-complete-symbol)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
 (global-set-key (kbd "C-c i") 'send-invisible)
 (global-set-key (kbd "C-c l") 'eassist-list-methods)
 (global-set-key (kbd "C-c o") 'eassist-switch-h-cpp)
+(global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c C-d") 'delete-horizontal-space-forward)
 
 (global-set-key (kbd "C-x g") 'magit-status)

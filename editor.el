@@ -1,11 +1,11 @@
 (require 'uniquify)
 (require 'whitespace)
 
-(autoload 'zap-up-to-char "misc"
-  "Kill up to, but not including ARGth occurrence of CHAR.")
+;; auto update buffers
+(global-auto-revert-mode 1)
 
 ;; zenburn theme
-(add-to-list 'custom-theme-load-path "~/emacs/themes/")
+(add-to-list 'custom-theme-load-path "/home/pcheng/emacs/themes/")
 (load-theme 'zenburn t)
 
 ;; disable startup screen
@@ -34,12 +34,19 @@
 					:background nil
 					:foreground "gray40")
 
-
 ;; cycle backwards without retriggering C-u
 (setq mark-command-repeat-pop t)
 
+
+(autoload 'zap-up-to-char "misc"
+  "Kill up to, but not including ARGth occurrence of CHAR.")
 
 (defun delete-horizontal-space-forward ()
       "*Delete all spaces and tabs after point."
       (interactive "*")
       (delete-region (point) (progn (skip-chars-forward " \t") (point))))
+
+(defun change-font-height (delta)
+  (set-face-attribute 'default 
+                      (selected-frame)
+                      :height (+ (face-attribute 'default :height) delta)))

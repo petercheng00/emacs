@@ -1,5 +1,5 @@
-(add-to-list 'load-path "~/libraries/cedet/")
-(add-to-list 'load-path "~/libraries/cedet/contrib/")
+(add-to-list 'load-path "/home/pcheng/libraries/cedet/")
+(add-to-list 'load-path "/home/pcheng/libraries/cedet/contrib/")
 (require 'cedet-devel-load)
 (require 'cedet-contrib-load)
 (require 'cc-mode)

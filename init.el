@@ -20,12 +20,16 @@
 ;; Keybinds
 (global-set-key [C-mouse-4] '(lambda () (interactive) (change-font-height +4)))
 (global-set-key [C-mouse-5] '(lambda () (interactive) (change-font-height -4)))
+(global-set-key [C-return] 'calculator)
 
 (global-set-key [f5] 'compile)
 (global-set-key [f9] 'deft)
 
 (global-set-key (kbd "M-.") 'semantic-ia-fast-jump)
-(global-set-key (kbd "M-?") 'semantic-ia-complete-symbol)
+(global-set-key (kbd "M-/") 'semantic-ia-complete-symbol)
+(global-set-key (kbd "M-?") 'semantic-ia-complete-symbol-menu)
+(global-set-key (kbd "M-n") 'next-error)
+(global-set-key (kbd "M-p") 'previous-error)
 (global-set-key (kbd "M-z") 'zap-up-to-char)
 
 (global-set-key (kbd "C-c =") '(lambda () (interactive) (change-font-height +4)))

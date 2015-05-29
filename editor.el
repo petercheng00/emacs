@@ -1,5 +1,6 @@
 (require 'uniquify)
 (require 'whitespace)
+(require 'hlinum)
 
 ;; auto update buffers
 (global-auto-revert-mode 1)
@@ -18,11 +19,16 @@
 
 ;; line numbers
 (global-linum-mode t)
-(add-hook 'shell-mode-hook (lambda ()
-                             (linum-mode -1)))
+(hlinum-activate)
+(set-face-attribute 'linum-highlight-face nil
+                    :background "#8FB28F")
+
 
 ;; column number
 (column-number-mode 1)
+
+;; fringe size
+(fringe-mode '(15 . 15))
 
 ;; tabs
 (setq-default indent-tabs-mode t)
@@ -64,3 +70,9 @@
   (set-face-attribute 'default 
                       (selected-frame)
                       :height (+ (face-attribute 'default :height) delta)))
+
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  ;; (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))

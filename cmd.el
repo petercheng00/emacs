@@ -1,3 +1,7 @@
+;; dired
+(setq dired-recursive-deletes 'always)
+
+;; shell settings
 (add-hook 'comint-output-filter-functions
           'comint-watch-for-password-prompt)
 
@@ -15,6 +19,8 @@
 		(local-set-key (kbd "<right>") 'right-char)
 	  ))
 
+;;eshell aliases
+(defalias 'ff 'find-file)
 
 
 (defun create-shell ()

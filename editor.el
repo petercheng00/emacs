@@ -31,7 +31,7 @@
 (fringe-mode '(15 . 15))
 
 ;; tabs
-(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
 
 ;; trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -57,6 +57,9 @@
 ;; (defadvice align-regexp (around align-regexp-with-spaces activate)
 ;;   (let ((indent-tabs-mode nil))
 ;;     ad-do-it))
+
+;; camel case
+(add-hook 'prog-mode-hook 'subword-mode)
 
 (autoload 'zap-up-to-char "misc"
   "Kill up to, but not including ARGth occurrence of CHAR.")

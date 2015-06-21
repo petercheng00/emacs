@@ -1,6 +1,5 @@
 (require 'calculator)
 (require 'cl)
-(require 'eassist)
 (require 'flx-ido)
 (require 'framemove)
 

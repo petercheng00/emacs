@@ -1,37 +1,41 @@
-;; (add-to-list 'load-path "/home/pcheng/libraries/cedet/")
-;; (add-to-list 'load-path "/home/pcheng/libraries/cedet/contrib/")
-;; (add-to-list 'load-path "/home/pcheng/libraries/function-args/")
-;; (require 'cedet-devel-load)
-;; (require 'cedet-contrib-load)
-;; (require 'function-args)
-;; (require 'eassist)
-
-
 (require 'cc-mode)
-
-;; semantic
-;; (add-to-list 'semantic-default-submodes 'global-semantic-decoration-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-idle-scheduler-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)
-;; (add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-highlight-func-mode)
-;; (add-to-list 'semantic-default-submodes 'global-semantic-show-parser-state-mode)
-;; (semantic-mode 1)
-
-;; ;; function-args
-;; (fa-config-default)
-;; (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-;; (set-default 'semantic-case-fold t)
 
 ;; c++ format
 (setq-default c-basic-offset 4
-	      tab-width 4
-	      indent-tabs-mode nil)
+              tab-width 4
+              indent-tabs-mode nil)
 
 (setq c-default-style "linux"
       c-basic-offset 4)
 
 ;; don't indent namespace
 (c-set-offset 'innamespace 0)
+
+;; company
+(global-company-mode)
+
+;; irony
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+;; company irony
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+
+;; (optional) adds CC special commands to `company-begin-commands' in order to
+;; trigger completion at interesting places, such as after scope operator
+;;     std::|
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+
+(setq company-async-timeout 10)

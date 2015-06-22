@@ -13,6 +13,7 @@
 
 ;; company
 (global-company-mode)
+(global-flycheck-mode)
 
 ;; irony
 (add-hook 'c++-mode-hook 'irony-mode)
@@ -39,3 +40,7 @@
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 
 (setq company-async-timeout 10)
+
+;; flycheck irony
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))

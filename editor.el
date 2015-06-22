@@ -33,8 +33,8 @@
 ;; tabs
 (setq-default indent-tabs-mode nil)
 
-;; trailing whitespace
-(setq-default show-trailing-whitespace t)
+;; trailing whitespace (disabled, is buggy with below setting sometimes)
+(setq-default show-trailing-whitespace nil)
 
 ;; show whitespace characters
 (global-whitespace-mode)

@@ -8,6 +8,7 @@
 (load-library "util")
 (load-library "cmd")
 (load-library "system")
+(load-library "custom")
 
 ;; Keybinds
 (global-set-key [C-mouse-4] '(lambda () (interactive) (change-font-height +4)))

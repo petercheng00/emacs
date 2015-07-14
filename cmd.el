@@ -24,16 +24,17 @@
 
 
 (defun create-shell ()
-    "creates a shell with a given name"
-    (interactive);; "Prompt\n shell name:")
-    (let ((shell-name (read-string "shell name: " nil)))
-	  (shell (concat "*" shell-name "*"))))
+  "creates a shell with a given name"
+  (interactive);; "Prompt\n shell name:")
+  (let ((shell-name (read-string "shell name: " nil)))
+    (shell (concat "*" shell-name "*"))))
 
 (defun create-eshell ()
-    "creates a shell with a given name"
-    (interactive);; "Prompt\n shell name:")
-    (let ((shell-name (read-string "shell name: " nil)))
-	  (eshell (concat "*" shell-name "*"))))
+  "creates an eshell with a given name"
+  (interactive);; "Prompt\n eshell name:")
+  (let ((eshell-name (read-string "eshell name: " nil)))
+    (eshell '1)
+    (rename-buffer (concat "*" eshell-name "*"))))
 
 (defun shell-hook ()
   (linum-mode -1)

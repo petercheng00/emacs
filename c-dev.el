@@ -11,6 +11,9 @@
 ;; don't indent namespace
 (c-set-offset 'innamespace 0)
 
+;; indent c macros
+(c-set-offset (quote cpp-macro) 0 nil)
+
 ;; company
 (global-company-mode)
 (global-flycheck-mode)

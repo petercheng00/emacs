@@ -1,6 +1,13 @@
+(require 'git-gutter-fringe)
+(require 'guess-style)
 (require 'uniquify)
 (require 'whitespace)
 (require 'hlinum)
+(require 'indent-guide)
+(require 'yasnippet)
+
+;; yasnippet
+(yas-global-mode 1)
 
 ;; auto update buffers
 (global-auto-revert-mode 1)
@@ -8,6 +15,19 @@
 ;; zenburn theme
 (add-to-list 'custom-theme-load-path "/home/pcheng/emacs/themes/")
 (load-theme 'zenburn t)
+
+;; git gutter
+(global-git-gutter-mode)
+
+;; modeline font size
+(let ((faces '(mode-line
+               mode-line-buffer-id
+               mode-line-emphasis
+               mode-line-highlight
+               mode-line-inactive)))
+  (mapc
+   (lambda (face) (set-face-attribute face nil :font "DejaVu Sans Mono-10"))
+   faces))
 
 ;; disable startup screen
 (setq inhibit-startup-message t)
@@ -23,40 +43,36 @@
 (set-face-attribute 'linum-highlight-face nil
                     :background "#8FB28F")
 
-
-;; column number
-(column-number-mode 1)
+;; no col/line in modeline
+(column-number-mode -1)
+(line-number-mode -1)
 
 ;; fringe size
 (fringe-mode '(15 . 15))
 
-;; tabs
-(setq-default indent-tabs-mode nil)
+;; which function mode
+(which-function-mode)
 
-;; trailing whitespace (disabled, is buggy with below setting sometimes)
-(setq-default show-trailing-whitespace nil)
+;; parentheses
+(show-paren-mode 1)
 
-;; show whitespace characters
-(global-whitespace-mode)
-(setq whitespace-style nil)
-(setq whitespace-style '(face tab-mark tabs))
-(set-face-attribute 'whitespace-tab nil
-                    :background nil
-                    :foreground "gray40")
-;; (set-face-attribute 'whitespace-indentation nil
-;;                     :background nil
-;;                     :foreground "gray40")
-;; (set-face-attribute 'whitespace-space nil
-;;                     :background nil
-;;                     :foreground "#3F3F3F")
+;; guess indent style
+(autoload 'guess-style-set-variable "guess-style" nil t)
+(autoload 'guess-style-guess-variable "guess-style")
+(autoload 'guess-style-guess-all "guess-style" nil t)
+(add-hook 'c-mode-common-hook 'guess-style-guess-all)
+(global-guess-style-info-mode 1)
+
+;; aggressive indent
+(global-aggressive-indent-mode)
+(add-to-list
+ 'aggressive-indent-dont-indent-if
+ '(and (derived-mode-p 'c++-mode)
+       (null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
+                           (thing-at-point 'line)))))
 
 ;; cycle backwards without retriggering C-u
 (setq mark-command-repeat-pop t)
-
-;; always do alignment with spaces
-;; (defadvice align-regexp (around align-regexp-with-spaces activate)
-;;   (let ((indent-tabs-mode nil))
-;;     ad-do-it))
 
 ;; camel case
 (add-hook 'prog-mode-hook 'subword-mode)
@@ -79,3 +95,11 @@
   (interactive)
   ;; (setq buffer-display-table (make-display-table))
   (aset buffer-display-table ?\^M []))
+
+
+(defun gcm-scroll-down ()
+  (interactive)
+  (scroll-up 1))
+(defun gcm-scroll-up ()
+  (interactive)
+  (scroll-down 1))

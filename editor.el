@@ -71,6 +71,9 @@
        (null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
                            (thing-at-point 'line)))))
 
+;; electric pair
+(electric-pair-mode)
+
 ;; cycle backwards without retriggering C-u
 (setq mark-command-repeat-pop t)
 

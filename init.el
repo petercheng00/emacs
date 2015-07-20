@@ -15,7 +15,6 @@
 (global-set-key [C-mouse-5] '(lambda () (interactive) (change-font-height -4)))
 (global-set-key [C-return] 'calculator)
 
-
 (global-set-key [f5] 'compile)
 (global-set-key [f9] 'deft)
 
@@ -25,14 +24,14 @@
 (global-set-key (kbd "M-?") 'company-complete)
 (global-set-key (kbd "M-n") 'gcm-scroll-down)
 (global-set-key (kbd "M-p") 'gcm-scroll-up)
+(global-set-key (kbd "M-w") 'ace-window)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-(global-set-key (kbd "M-z") 'zap-up-to-char)
-
+(global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
 
 (global-set-key (kbd "C-.") 'rtags-imenu)
 
-
+(global-set-key (kbd "C-c SPC") 'avy-goto-char)
 (global-set-key (kbd "C-c =") '(lambda () (interactive) (change-font-height +4)))
 (global-set-key (kbd "C-c -") '(lambda () (interactive) (change-font-height -4)))
 (global-set-key (kbd "C-c d") 'delete-horizontal-space)
@@ -43,7 +42,9 @@
 (global-set-key (kbd "C-c o") 'helm-occur)
 (global-set-key (kbd "C-c r") 'replace-string)
 (global-set-key (kbd "C-c x") 'eshell)
+(global-set-key (kbd "C-c z") 'avy-zap-to-char)
 
+(global-set-key (kbd "C-c C-SPC") 'avy-goto-char-2)
 (global-set-key (kbd "C-c C-r") 'query-replace)
 (global-set-key (kbd "C-c C-x") 'create-eshell)
 

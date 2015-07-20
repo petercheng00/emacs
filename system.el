@@ -28,8 +28,8 @@
 ;; smart mode line
 (setq sml/theme 'powerline)
 (setq sml/no-confirm-load-theme t)
-(setq sml/name-width 15)
-(setq sml/mode-width 10)
+(setq sml/name-width 40)
+(setq sml/mode-width 'full)
 (setq sml/shorten-modes t)
 (let ((which-func '(which-func-mode ("" which-func-format " "))))
   (setq-default mode-line-format (remove which-func mode-line-format))

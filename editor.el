@@ -71,8 +71,9 @@
        (null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
                            (thing-at-point 'line)))))
 
-;; electric pair
-(electric-pair-mode)
+;; smartparens
+(smartparens-global-mode t)
+(require 'smartparens-config)
 
 ;; cycle backwards without retriggering C-u
 (setq mark-command-repeat-pop t)

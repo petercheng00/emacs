@@ -24,7 +24,6 @@
 (global-set-key (kbd "M-?") 'company-complete)
 (global-set-key (kbd "M-n") 'gcm-scroll-down)
 (global-set-key (kbd "M-p") 'gcm-scroll-up)
-(global-set-key (kbd "M-w") 'ace-window)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-z") 'avy-zap-to-char-dwim)
@@ -52,7 +51,15 @@
 
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-x o") 'ace-window)
 (global-set-key (kbd "C-x r") 'rename-buffer)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+(define-key smartparens-mode-map (kbd "C-c C-a") 'sp-beginning-of-sexp)
+(define-key smartparens-mode-map (kbd "C-c C-e") 'sp-end-of-sexp)
+(define-key smartparens-mode-map (kbd "C-c C-n") 'sp-next-sexp)
+(define-key smartparens-mode-map (kbd "C-c C-p") 'sp-previous-sexp)
+(define-key smartparens-mode-map (kbd "C-c C-s") 'sp-forward-slurp-sexp)
+

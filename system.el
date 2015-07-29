@@ -28,7 +28,7 @@
 ;; smart mode line
 (setq sml/theme 'powerline)
 (setq sml/no-confirm-load-theme t)
-(setq sml/name-width 40)
+(setq sml/name-width 10)
 (setq sml/mode-width 'full)
 (setq sml/shorten-modes t)
 (let ((which-func '(which-func-mode ("" which-func-format " "))))

@@ -1,7 +1,3 @@
-;; perspective
-;; (persp-mode)
-;; (require 'persp-projectile)
-
 ;; use projectile
 (projectile-global-mode)
 

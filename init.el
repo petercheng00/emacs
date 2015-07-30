@@ -1,12 +1,16 @@
-(add-to-list 'load-path "/home/pcheng/emacs/lisp")
+;; Init file for emacs setup.
+;; Load this from .emacs
+
+;; Path to local libraries
+(add-to-list 'load-path "~/emacs")
+(add-to-list 'load-path "~/emacs/lisp")
 
 ;; Init files
 (load-library "packages")
-(load-library "org")
 (load-library "c-dev")
-(load-library "editor")
-(load-library "util")
 (load-library "cmd")
+(load-library "editor")
+(load-library "org")
 (load-library "system")
 (load-library "custom")
 

@@ -1,27 +1,28 @@
-;; dired
-(setq dired-recursive-deletes 'always)
+;; Shell/Eshell/Term related settings
 
-;; shell settings
+;; Hide passwords
 (add-hook 'comint-output-filter-functions
           'comint-watch-for-password-prompt)
 
-
+;; Hook for shell mode settings
 (add-hook 'shell-mode-hook 'shell-hook)
 (add-hook 'eshell-mode-hook 'shell-hook)
 
-;;Make eshell behave like shell
+;; Add arrow key navigation to eshell
 (add-hook 'eshell-mode-hook
 		  (lambda ()
-		(local-set-key (kbd "M-r") 'eshell-ido-complete-command-history)
-		(local-set-key (kbd "<up>") 'previous-line)
-		(local-set-key (kbd "<down>") 'next-line)
-		(local-set-key (kbd "<left>") 'left-char)
-		(local-set-key (kbd "<right>") 'right-char)
-	  ))
+            (local-set-key (kbd "<up>") 'previous-line)
+            (local-set-key (kbd "<down>") 'next-line)
+            (local-set-key (kbd "<left>") 'left-char)
+            (local-set-key (kbd "<right>") 'right-char)
+            ))
 
-;;eshell aliases
+(defun shell-hook ()
+  (linum-mode -1)
+  (setq show-trailing-whitespace nil))
+
+;; Eshell aliases
 (defalias 'ff 'find-file)
-
 
 (defun create-shell ()
   "creates a shell with a given name"
@@ -35,10 +36,6 @@
   (let ((eshell-name (read-string "eshell name: " nil)))
     (eshell '1)
     (rename-buffer (concat "*" eshell-name "*"))))
-
-(defun shell-hook ()
-  (linum-mode -1)
-  (setq show-trailing-whitespace nil))
 
 (defun eshell-clear-buffer ()
   "Clear terminal"

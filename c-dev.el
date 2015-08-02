@@ -17,7 +17,6 @@
 ;; Clang completion
 (use-package irony
   :ensure t
-  :defer t
   :config
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
@@ -32,8 +31,7 @@
 
 ;; Clang parsing (use-package doesn't like for some reason)
 ;; (use-package rtags
-;;   :ensure t
-;;   :defer)
+;;   :ensure t)
 
 ;; General indentation settings
 (setq-default c-basic-offset 4

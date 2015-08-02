@@ -3,7 +3,6 @@
 ;; Always maintain correct indentation
 (use-package aggressive-indent
   :ensure t
-  :defer t
   :config
   (add-to-list
    'aggressive-indent-dont-indent-if
@@ -15,7 +14,6 @@
 ;; Completion front-end
 (use-package company
   :ensure t
-  :defer t
   :config
   (global-company-mode)
   (setq company-async-timeout 10))
@@ -23,14 +21,12 @@
 ;; Live syntax checker
 (use-package flycheck
   :ensure t
-  :defer t
   :config
   (global-flycheck-mode))
 
 ;; Show git line diffs in gutter
 (use-package git-gutter-fringe
   :ensure t
-  :defer t
   :config
   (global-git-gutter-mode))
 
@@ -53,14 +49,12 @@
 ;; Parentheses navigation
 (use-package smartparens
   :ensure t
-  :defer t
   :config
   (smartparens-global-mode t))
 
 ;; Templating framework
 (use-package yasnippet
   :ensure t
-  :defer t
   :config
   (yas-global-mode 1))
 

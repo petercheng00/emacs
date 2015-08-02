@@ -2,16 +2,13 @@
 
 ;; Jump between windows
 (use-package ace-window
-  :ensure t
-  :defer t)
+  :ensure t)
 
 ;; Set-based completion
 (use-package avy
-  :ensure t
-  :defer t)
+  :ensure t)
 (use-package avy-zap
-  :ensure t
-  :defer t)
+  :ensure t)
 
 ;; Calculator
 (use-package calculator
@@ -21,53 +18,73 @@
 ;; Move between frames with arrow keys
 (use-package framemove
   :ensure t
-  :defer t
   :config
   (windmove-default-keybindings)
   (setq framemove-hook-into-windmove t))
 
 ;; Helm
 (use-package helm
-  :ensure t
-  :defer t
-  :config
-  (require 'helm-config)
-  (require 'helm-eshell)
-  (helm-autoresize-mode 1)
-  (setq helm-split-window-in-side-p t)
-  (setq helm-recentf-fuzzy-match t)
-  (setq helm-buffers-fuzzy-matching t)
-  (setq helm-locate-fuzzy-match t)
-  (setq helm-M-x-fuzzy-match t)
-  (setq helm-imenu-fuzzy-match t)
-  (setq helm-apropos-fuzzy-match t)
-  (setq helm-lisp-fuzzy-completion t)
-  (helm-mode 1)
-  (add-hook 'eshell-mode-hook
-            #'(lambda ()
-                (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history))))
+ :ensure t
+ :config
+ (require 'helm-config)
+ (require 'helm-eshell)
+ (helm-autoresize-mode 1)
+ (setq helm-split-window-in-side-p t)
+ (setq helm-recentf-fuzzy-match t)
+ (setq helm-buffers-fuzzy-matching t)
+ (setq helm-locate-fuzzy-match t)
+ (setq helm-M-x-fuzzy-match t)
+ (setq helm-imenu-fuzzy-match t)
+ (setq helm-apropos-fuzzy-match t)
+ (setq helm-lisp-fuzzy-completion t)
+ (helm-mode 1)
+ (add-hook 'eshell-mode-hook
+           #'(lambda ()
+               (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history))))
 
 ;; Git porcelain
 (use-package magit
+  :ensure t)
+
+;; Dependency for rtags
+(use-package popup
+  :ensure t)
+
+;; Hide minor modes
+(use-package rich-minority
   :ensure t
-  :defer t)
+  :config
+  ;; smart mode line enables rich minority
+  ;;(rich-minority-mode 1)
+  (setq rm-blacklist
+        (mapconcat 'identity 
+                   '(
+                     " ,"
+                     " =>"
+                     " Abbrev"
+                     " company"
+                     " GitGutter"
+                     " Helm"
+                     " Irony"
+                     " Projectile.*"
+                     " SP"
+                     " yas")
+                   "\\\|")))
 
 ;; Smart mode line
 (use-package smart-mode-line
   :ensure t
   :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/name-width 10)
-  (setq sml/mode-width 'full)
+  (setq sml/name-width 20)
+  (setq sml/mode-width 'right)
+  (setq sml/shorten-directory t)
   (setq sml/shorten-modes t)
-  (let ((which-func '(which-func-mode ("" which-func-format " "))))
-    (setq-default mode-line-format (remove which-func mode-line-format))
-    (setq-default mode-line-misc-info (remove which-func mode-line-misc-info))
-    (setq cell (last mode-line-format 8))
-    (setcdr cell
-            (cons which-func
-                  (cdr cell))))
-  (sml/setup))
+  (setq sml/no-confirm-load-theme t)
+  (if after-init-time
+      (sml/setup)
+    (add-hook 'after-init-hook 'sml/setup)))
+
+
 (use-package smart-mode-line-powerline-theme
   :ensure t
   :config

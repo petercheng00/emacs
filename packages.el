@@ -12,3 +12,9 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
+
+;; Auto update melpa packages
+(use-package auto-package-update
+  :ensure t
+  :config
+  (auto-package-update-at-time "12:30"))

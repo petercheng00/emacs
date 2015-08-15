@@ -51,6 +51,7 @@
 (global-set-key (kbd "C-c C-e") 'flycheck-next-error)
 (global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
 (global-set-key (kbd "C-c C-r") 'query-replace)
+(global-set-key (kbd "C-c C-s") 'sf-slurp-hybrid-sexp)
 (global-set-key (kbd "C-c C-x") 'create-eshell)
 
 (global-set-key (kbd "C-c C-S-r") 'rtags-rename-symbol)
@@ -62,10 +63,4 @@
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
-
-;; (define-key smartparens-mode-map (kbd "C-c C-a") 'sp-beginning-of-sexp)
-;; (define-key smartparens-mode-map (kbd "C-c C-e") 'sp-end-of-sexp)
-;; (define-key smartparens-mode-map (kbd "C-c C-n") 'sp-next-sexp)
-;; (define-key smartparens-mode-map (kbd "C-c C-p") 'sp-previous-sexp)
-;; (define-key smartparens-mode-map (kbd "C-c C-s") 'sp-forward-slurp-sexp)
 

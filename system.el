@@ -54,8 +54,6 @@
 (use-package rich-minority
   :ensure t
   :config
-  ;; smart mode line enables rich minority
-  ;;(rich-minority-mode 1)
   (setq rm-blacklist
         (mapconcat 'identity 
                    '(
@@ -75,20 +73,19 @@
 (use-package smart-mode-line
   :ensure t
   :config
-  (setq sml/name-width 20)
+  (setq sml/override-theme nil)
+  (setq sml/name-width 35)
   (setq sml/mode-width 'right)
-  (setq sml/shorten-directory t)
-  (setq sml/shorten-modes t)
   (setq sml/no-confirm-load-theme t)
+  ;; (setq sml/theme 'dark)
   (if after-init-time
       (sml/setup)
     (add-hook 'after-init-hook 'sml/setup)))
 
-
-(use-package smart-mode-line-powerline-theme
-  :ensure t
-  :config
-  (setq sml/theme 'powerline))
+;; (use-package smart-mode-line-powerline-theme
+;;   :ensure t
+;;   :config
+;;   (setq sml/theme 'powerline))
 
 ;; Ediff split settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -110,13 +107,3 @@
 ;; Windmove
 (when (fboundp 'windmove-default-keybindings)
  (windmove-default-keybindings 'meta))
-
-;; Close the compilation window if there was no error at all.
-(setq compilation-finish-functions 'compile-autoclose)
-(defun compile-autoclose (buffer string)
-  (cond ((string-match "finished" string)
-		 (bury-buffer "*compilation*")
-		 (winner-undo)
-		 (message "Build successful."))
-		(t
-		 (message "Compilation exited abnormally: %s" string))))

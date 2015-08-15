@@ -52,6 +52,12 @@
   :config
   (smartparens-global-mode t))
 
+;; Trim trailing whitespace on modified lines
+(use-package ws-butler
+  :ensure t
+  :config
+  (ws-butler-global-mode))
+
 ;; Templating framework
 (use-package yasnippet
   :ensure t
@@ -82,8 +88,11 @@
 ;; Fringe size
 (fringe-mode '(15 . 15))
 
-;; Show current function
-(which-function-mode)
+;; Sticky function headers
+(semantic-mode t)
+(global-semantic-stickyfunc-mode t)
+(global-semantic-decoration-mode t)
+(global-semantic-highlight-func-mode t)
 
 ;; Show matching parentheses
 (show-paren-mode 1)

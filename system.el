@@ -66,6 +66,7 @@
                      " Irony"
                      " Projectile.*"
                      " SP"
+                     " wb"
                      " yas")
                    "\\\|")))
 

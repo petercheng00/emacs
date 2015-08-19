@@ -51,7 +51,7 @@
 (global-set-key (kbd "C-c C-e") 'flycheck-next-error)
 (global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
 (global-set-key (kbd "C-c C-r") 'query-replace)
-(global-set-key (kbd "C-c C-s") 'sf-slurp-hybrid-sexp)
+(global-set-key (kbd "C-c C-s") 'sp-slurp-hybrid-sexp)
 (global-set-key (kbd "C-c C-x") 'create-eshell)
 
 (global-set-key (kbd "C-c C-S-r") 'rtags-rename-symbol)

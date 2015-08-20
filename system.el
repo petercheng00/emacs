@@ -102,6 +102,9 @@
 ;; No backups
 (setq make-backup-files nil)
 
+;; Scroll compilation buffer until first error
+(setq compilation-scroll-output 'first-error)
+
 ;; Save sessions
 (desktop-save-mode 1)
 

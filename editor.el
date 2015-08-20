@@ -46,6 +46,19 @@
   (set-face-attribute 'linum-highlight-face nil
                       :background "#8FB28F"))
 
+;; Colorful delimiters
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (setq rainbow-identifiers-faces-to-override '(font-lock-type-face font-lock-variable-name-face))
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+;; Color-themed identifiers
+(use-package rainbow-identifiers
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
+
 ;; Parentheses navigation
 (use-package smartparens
   :ensure t

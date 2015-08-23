@@ -50,14 +50,11 @@
 (use-package rainbow-delimiters
   :ensure t
   :config
-  (setq rainbow-identifiers-faces-to-override '(font-lock-type-face font-lock-variable-name-face))
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
 ;; Color-themed identifiers
 (use-package rainbow-identifiers
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
+  :ensure t)
 
 ;; Parentheses navigation
 (use-package smartparens
@@ -125,6 +122,24 @@
   (set-face-attribute 'default 
                       (selected-frame)
                       :height (+ (face-attribute 'default :height) delta)))
+
+(defun comment-line-or-region (n)
+  "Comment or uncomment current line and leave point after it.
+With positive prefix, apply to N lines including current one.
+With negative prefix, apply to -N lines above.
+If region is active, apply to active region instead."
+  (interactive "p")
+  (if (use-region-p)
+      (comment-or-uncomment-region
+       (region-beginning) (region-end))
+    (let ((range
+           (list (line-beginning-position)
+                 (goto-char (line-end-position n)))))
+      (comment-or-uncomment-region
+       (apply #'min range)
+       (apply #'max range)))
+    (forward-line 1)
+    (back-to-indentation)))
 
 (defun remove-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."

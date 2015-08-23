@@ -37,10 +37,9 @@
 (setq-default c-basic-offset 4
               tab-width 4
               indent-tabs-mode nil)
-(setq c-default-style "linux"
-      c-basic-offset 4)
 
-;; Don't indent namespace blocks
+;; Set specific indentation levels
+(c-set-offset 'substatement-open 0)
 (c-set-offset 'innamespace 0)
 
 ;; Indent macros with surrounding code

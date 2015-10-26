@@ -44,3 +44,6 @@
 
 ;; Indent macros with surrounding code
 (c-set-offset (quote cpp-macro) 0 nil)
+
+;; Compile command
+(setq compile-command "make -C ~/mp/build/ -j6 base_app")

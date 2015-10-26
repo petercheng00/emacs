@@ -9,7 +9,8 @@
    '(and (derived-mode-p 'c++-mode)
          (null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
                              (thing-at-point 'line)))))
-  (global-aggressive-indent-mode))
+  ;;(global-aggressive-indent-mode))
+  )
 
 ;; Completion front-end
 (use-package company
@@ -113,10 +114,13 @@
 ;; Break subwords by camel case
 (add-hook 'prog-mode-hook 'subword-mode)
 
+;; Add lines when at end of buffer
+(setq next-line-add-newlines t)
+
 (defun delete-horizontal-space-forward ()
-      "*Delete all spaces and tabs after point."
-      (interactive "*")
-      (delete-region (point) (progn (skip-chars-forward " \t") (point))))
+  "*Delete all spaces and tabs after point."
+  (interactive "*")
+  (delete-region (point) (progn (skip-chars-forward " \t") (point))))
 
 (defun change-font-height (delta)
   (set-face-attribute 'default 

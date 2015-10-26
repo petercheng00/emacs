@@ -50,43 +50,42 @@
 (use-package popup
   :ensure t)
 
-;; Hide minor modes
-(use-package rich-minority
+;; Hide minor modes in modeline
+(use-package diminish
   :ensure t
   :config
-  (setq rm-blacklist
-        (mapconcat 'identity 
-                   '(
-                     " ,"
-                     " =>"
-                     " Abbrev"
-                     " company"
-                     " GitGutter"
-                     " Helm"
-                     " Irony"
-                     " Projectile.*"
-                     " SP"
-                     " wb"
-                     " yas")
-                   "\\\|")))
+  (diminish 'abbrev-mode)
+  (diminish 'irony-mode)
+  (eval-after-load "subword" '(diminish 'subword-mode))
+  (diminish 'ws-butler-mode)
+  (diminish 'company-mode)
+  (diminish 'git-gutter-mode)
+  (diminish 'helm-mode)
+  (diminish 'projectile-mode)
+  (diminish 'smartparens-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'yas-minor-mode))
 
-;; Smart mode line
-(use-package smart-mode-line
+;; Show search status
+(use-package anzu
   :ensure t
   :config
-  (setq sml/override-theme nil)
-  (setq sml/name-width 35)
-  (setq sml/mode-width 'right)
-  (setq sml/no-confirm-load-theme t)
-  ;; (setq sml/theme 'dark)
-  (if after-init-time
-      (sml/setup)
-    (add-hook 'after-init-hook 'sml/setup)))
+  (setq anzu-mode-lighter "")
+  (setq anzu-cons-mode-line-p nil)
+  (global-anzu-mode +1))
 
-;; (use-package smart-mode-line-powerline-theme
-;;   :ensure t
-;;   :config
-;;   (setq sml/theme 'powerline))
+;; Space modeline
+(use-package spaceline
+  :ensure t
+  :config
+  (require 'spaceline-config)
+  (spaceline-emacs-theme)
+  (setq powerline-default-separator 'slant)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified))
+
+;; Transpose frames
+(use-package transpose-frame
+  :ensure t)
 
 ;; Ediff split settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -105,9 +104,9 @@
 ;; Scroll compilation buffer until first error
 (setq compilation-scroll-output 'first-error)
 
-;; Save sessions
-(desktop-save-mode 1)
-
 ;; Windmove
 (when (fboundp 'windmove-default-keybindings)
- (windmove-default-keybindings 'meta))
+  (windmove-default-keybindings 'meta))
+
+;; Confirm quit
+(setq confirm-kill-emacs 'y-or-n-p)

@@ -46,6 +46,12 @@
 (use-package magit
   :ensure t)
 
+;; (use-package magit-gh-pulls
+;;   :ensure t
+;;   :config
+;;   (require 'magit-gh-pulls)
+;;   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+
 ;; Dependency for rtags
 (use-package popup
   :ensure t)

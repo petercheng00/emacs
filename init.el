@@ -49,7 +49,7 @@
 (global-set-key (kbd "C-c z") 'avy-zap-to-char)
 
 (global-set-key (kbd "C-c C-SPC") 'avy-goto-char-2)
-(global-set-key (kbd "C-c C-e") 'flycheck-next-error)
+(global-set-key (kbd "C-c C-n") 'flycheck-next-error)
 (global-set-key (kbd "C-c C-p") 'flycheck-previous-error)
 (global-set-key (kbd "C-c C-r") 'query-replace)
 (global-set-key (kbd "C-c C-s") 'sp-slurp-hybrid-sexp)

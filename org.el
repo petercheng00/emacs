@@ -2,7 +2,9 @@
 
 ;; Notes
 (use-package deft
-  :ensure t)
+  :ensure t
+  :config
+  (setq deft-auto-save-interval 0))
 
 ;; Helm interface to projectile
 (use-package helm-projectile

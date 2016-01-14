@@ -63,6 +63,17 @@
   :config
   (smartparens-global-mode t))
 
+(use-package smooth-scrolling
+  :ensure t
+  :config
+  (setq smooth-scroll-margin 5))
+
+;; Undo tree
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
+
 ;; Trim trailing whitespace on modified lines
 (use-package ws-butler
   :ensure t

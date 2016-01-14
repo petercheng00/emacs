@@ -28,6 +28,7 @@
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-?") 'company-complete)
 (global-set-key (kbd "M-n") 'gcm-scroll-down)
+(global-set-key (kbd "M-o") 'ace-window)
 (global-set-key (kbd "M-p") 'gcm-scroll-up)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
@@ -59,7 +60,6 @@
 
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "C-x g") 'magit-status)
-(global-set-key (kbd "C-x o") 'ace-window)
 (global-set-key (kbd "C-x r") 'rename-buffer)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)

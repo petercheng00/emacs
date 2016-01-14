@@ -116,3 +116,6 @@
 
 ;; Confirm quit
 (setq confirm-kill-emacs 'y-or-n-p)
+
+;; No vertical splits allowed
+(setq split-height-threshold nil)

@@ -4,6 +4,14 @@
 (use-package ace-window
   :ensure t)
 
+;; Show search status
+(use-package anzu
+  :ensure t
+  :config
+  (setq anzu-mode-lighter "")
+  (setq anzu-cons-mode-line-p nil)
+  (global-anzu-mode +1))
+
 ;; Set-based completion
 (use-package avy
   :ensure t)
@@ -14,6 +22,22 @@
 (use-package calculator
   :ensure t
   :defer t)
+
+;; Hide minor modes in modeline
+(use-package diminish
+  :ensure t
+  :config
+  (diminish 'abbrev-mode)
+  (diminish 'auto-revert-mode)
+  (eval-after-load "subword" '(diminish 'subword-mode))
+  (diminish 'ws-butler-mode)
+  (diminish 'company-mode)
+  (diminish 'git-gutter-mode)
+  (diminish 'helm-mode)
+  (diminish 'projectile-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'undo-tree-mode)
+  (diminish 'yas-minor-mode))
 
 ;; Move between frames with arrow keys
 (use-package framemove
@@ -44,41 +68,18 @@
 
 ;; Git porcelain
 (use-package magit
-  :ensure t)
-
-;; (use-package magit-gh-pulls
-;;   :ensure t
-;;   :config
-;;   (require 'magit-gh-pulls)
-;;   (add-hook 'magit-mode-hook 'turn-on-magit-gh-pulls))
+  :ensure t
+  :config
+  (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100"))))
 
 ;; Dependency for rtags
 (use-package popup
   :ensure t)
 
-;; Hide minor modes in modeline
-(use-package diminish
+(use-package pdf-tools
   :ensure t
   :config
-  (diminish 'abbrev-mode)
-  (diminish 'irony-mode)
-  (eval-after-load "subword" '(diminish 'subword-mode))
-  (diminish 'ws-butler-mode)
-  (diminish 'company-mode)
-  (diminish 'git-gutter-mode)
-  (diminish 'helm-mode)
-  (diminish 'projectile-mode)
-  (diminish 'smartparens-mode)
-  (diminish 'flycheck-mode)
-  (diminish 'yas-minor-mode))
-
-;; Show search status
-(use-package anzu
-  :ensure t
-  :config
-  (setq anzu-mode-lighter "")
-  (setq anzu-cons-mode-line-p nil)
-  (global-anzu-mode +1))
+  (pdf-tools-install))
 
 ;; Space modeline
 (use-package spaceline
@@ -92,6 +93,11 @@
 ;; Transpose frames
 (use-package transpose-frame
   :ensure t)
+
+;; Show time in modeline
+(setq display-time-default-load-average nil)
+(setq display-time-day-and-date t)
+(display-time-mode)
 
 ;; Ediff split settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -110,12 +116,15 @@
 ;; Scroll compilation buffer until first error
 (setq compilation-scroll-output 'first-error)
 
-;; Windmove
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings 'meta))
-
 ;; Confirm quit
 (setq confirm-kill-emacs 'y-or-n-p)
 
 ;; No vertical splits allowed
 (setq split-height-threshold nil)
+
+(defun fullscreen-triple ()
+  (interactive)
+  (toggle-frame-fullscreen)
+  (when (< (count-windows) 3)
+      (split-window-horizontally)
+      (balance-windows)))

@@ -17,35 +17,21 @@
   :ensure t
   :config
   (global-company-mode)
-  (setq company-async-timeout 10))
+  (setq company-async-timeout 10)
+  (define-key company-active-map (kbd "M-n") nil)
+  (define-key company-active-map (kbd "M-p") nil)
+  (define-key company-active-map (kbd "C-n") #'company-select-next)
+  (define-key company-active-map (kbd "C-p") #'company-select-previous))
 
-;; Live syntax checker
-(use-package flycheck
-  :ensure t
-  :config
-  (global-flycheck-mode))
+;; Close stuff
+(use-package general-close
+  :ensure t)
 
 ;; Show git line diffs in gutter
 (use-package git-gutter-fringe
   :ensure t
   :config
   (global-git-gutter-mode))
-
-;; Guess indentation style
-(require 'guess-style)
-(autoload 'guess-style-set-variable "guess-style" nil t)
-(autoload 'guess-style-guess-variable "guess-style")
-(autoload 'guess-style-guess-all "guess-style" nil t)
-(add-hook 'c-mode-common-hook 'guess-style-guess-all)
-(global-guess-style-info-mode 1)
-
-;; Highlight current line number
-(use-package hlinum
-  :ensure t
-  :config
-  (hlinum-activate)
-  (set-face-attribute 'linum-highlight-face nil
-                      :background "#8FB28F"))
 
 ;; Colorful delimiters
 (use-package rainbow-delimiters
@@ -57,16 +43,11 @@
 (use-package rainbow-identifiers
   :ensure t)
 
-;; Parentheses navigation
-(use-package smartparens
-  :ensure t
-  :config
-  (smartparens-global-mode t))
-
 (use-package smooth-scrolling
   :ensure t
   :config
-  (setq smooth-scroll-margin 5))
+  (setq smooth-scroll-margin 5)
+  smooth-scrolling-mode)
 
 ;; Undo tree
 (use-package undo-tree
@@ -101,7 +82,7 @@
 (menu-bar-mode -1)
 
 ;; Line numbers
-(global-linum-mode t)
+(add-hook 'prog-mode-hook 'linum-on)
 
 ;; No col/line in modeline
 (column-number-mode -1)
@@ -111,10 +92,10 @@
 (fringe-mode '(15 . 15))
 
 ;; Sticky function headers
-(semantic-mode t)
-(global-semantic-stickyfunc-mode t)
-(global-semantic-decoration-mode t)
-(global-semantic-highlight-func-mode t)
+;; (semantic-mode t)
+;; (global-semantic-stickyfunc-mode t)
+;; (global-semantic-decoration-mode t)
+;; (global-semantic-highlight-func-mode t)
 
 ;; Show matching parentheses
 (show-paren-mode 1)
@@ -133,8 +114,13 @@
   (interactive "*")
   (delete-region (point) (progn (skip-chars-forward " \t") (point))))
 
+(defun general-close-and-indent ()
+  (interactive)
+  (general-close)
+  (indent-for-tab-command))
+
 (defun change-font-height (delta)
-  (set-face-attribute 'default 
+  (set-face-attribute 'default
                       (selected-frame)
                       :height (+ (face-attribute 'default :height) delta)))
 

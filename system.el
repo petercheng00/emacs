@@ -18,6 +18,10 @@
 (use-package avy-zap
   :ensure t)
 
+;; Key bindings
+(use-package bind-key
+  :ensure t)
+
 ;; Calculator
 (use-package calculator
   :ensure t

@@ -12,7 +12,10 @@
 (load-library "editor")
 (load-library "organization")
 (load-library "system")
-(load-library "custom")
+
+;; Customization file
+(setq custom-file "~/emacs/custom.el")
+(load custom-file)
 
 ;; Keybinds
 (bind-key [C-mouse-4] '(lambda () (interactive) (change-font-height +4)))
@@ -24,7 +27,7 @@
 
 (bind-key "M-," 'rtags-find-references-at-point)
 (bind-key "M-." 'rtags-find-symbol-at-point)
-(bind-key "M-;" 'comment-line)
+(bind-key "M-;" 'comment-line-or-region)
 (bind-key "M-/" 'hippie-expand)
 (bind-key "M-?" 'company-complete)
 (bind-key "M-i" 'rtags-display-summary)
@@ -43,6 +46,7 @@
 (bind-key "C-c =" '(lambda () (interactive) (change-font-height +4)))
 (bind-key "C-c -" '(lambda () (interactive) (change-font-height -4)))
 (bind-key "C-c d" 'delete-horizontal-space)
+(bind-key "C-c e" 'flycheck-next-error)
 (bind-key "C-c f" 'helm-projectile-find-file-in-known-projects)
 (bind-key "C-c i" 'send-invisible)
 (bind-key "C-c m" 'remove-dos-eol)

@@ -23,6 +23,11 @@
   (define-key company-active-map (kbd "C-n") #'company-select-next)
   (define-key company-active-map (kbd "C-p") #'company-select-previous))
 
+(use-package flycheck
+  :ensure t
+  :config
+  (global-flycheck-mode))
+
 ;; Close stuff
 (use-package general-close
   :ensure t)
@@ -32,6 +37,15 @@
   :ensure t
   :config
   (global-git-gutter-mode))
+
+;; (use-package highlight-indent-guides
+  ;; :ensure t
+  ;; :config
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; (setq highlight-indent-guides-method 'column))
+
+(use-package multiple-cursors
+  :ensure t)
 
 ;; Colorful delimiters
 (use-package rainbow-delimiters
@@ -65,7 +79,10 @@
 (use-package yasnippet
   :ensure t
   :config
-  (yas-global-mode 1))
+  (yas-reload-all)
+  (add-hook 'prog-mode-hook 'yas-minor-mode)
+  (add-hook 'ess-mode-hook 'yas-minor-mode)
+  (add-hook 'markdown-mode-hook 'yas-minor-mode))
 
 ;; Theme
 (use-package zenburn-theme
@@ -137,3 +154,21 @@
 (defun gcm-scroll-up ()
   (interactive)
   (scroll-down 1))
+
+(defun comment-line-or-region (n)
+  "Comment or uncomment current line and leave point after it.
+With positive prefix, apply to N lines including current one.
+With negative prefix, apply to -N lines above.
+If region is active, apply to active region instead."
+  (interactive "p")
+  (if (use-region-p)
+      (comment-or-uncomment-region
+       (region-beginning) (region-end))
+    (let ((range
+           (list (line-beginning-position)
+                 (goto-char (line-end-position n)))))
+      (comment-or-uncomment-region
+       (apply #'min range)
+       (apply #'max range)))
+    (forward-line 1)
+    (back-to-indentation)))

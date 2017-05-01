@@ -4,7 +4,7 @@
 (use-package rtags
   :ensure t
   :config
-  (setq rtags-autostart-diagnostics t)
+  ;; (setq rtags-autostart-diagnostics t)
   (setq rtags-completions-enabled t)
   (setq rtags-use-helm t)
   (eval-after-load 'company

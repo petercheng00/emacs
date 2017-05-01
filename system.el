@@ -74,7 +74,8 @@
 (use-package magit
   :ensure t
   :config
-  (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100"))))
+  (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
+  (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
 
 ;; Dependency for rtags
 (use-package popup
@@ -92,7 +93,9 @@
   (require 'spaceline-config)
   (spaceline-emacs-theme)
   (setq powerline-default-separator 'slant)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified))
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
+  (which-function-mode)
+  (spaceline-toggle-which-function-on))
 
 ;; Transpose frames
 (use-package transpose-frame

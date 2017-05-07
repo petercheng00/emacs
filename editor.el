@@ -28,10 +28,6 @@
   :config
   (global-flycheck-mode))
 
-;; Close stuff
-(use-package general-close
-  :ensure t)
-
 ;; Show git line diffs in gutter
 (use-package git-gutter-fringe
   :ensure t
@@ -130,11 +126,6 @@
   "*Delete all spaces and tabs after point."
   (interactive "*")
   (delete-region (point) (progn (skip-chars-forward " \t") (point))))
-
-(defun general-close-and-indent ()
-  (interactive)
-  (general-close)
-  (indent-for-tab-command))
 
 (defun change-font-height (delta)
   (set-face-attribute 'default

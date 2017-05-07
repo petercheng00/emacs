@@ -40,7 +40,6 @@
 (bind-key "M-z" 'avy-zap-to-char-dwim)
 
 (bind-key "C-." 'rtags-imenu)
-(bind-key "C-;" 'general-close-and-indent)
 
 (bind-key "C-c SPC" 'avy-goto-char)
 (bind-key "C-c =" '(lambda () (interactive) (change-font-height +4)))

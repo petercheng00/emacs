@@ -42,8 +42,6 @@
 (bind-key "C-." 'rtags-imenu)
 
 (bind-key "C-c SPC" 'avy-goto-char)
-(bind-key "C-c =" '(lambda () (interactive) (change-font-height +4)))
-(bind-key "C-c -" '(lambda () (interactive) (change-font-height -4)))
 (bind-key "C-c d" 'delete-horizontal-space)
 (bind-key "C-c e" 'flycheck-next-error)
 (bind-key "C-c f" 'helm-projectile-find-file-in-known-projects)

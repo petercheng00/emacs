@@ -1,14 +1,11 @@
 ;; C/C++ Development Settings
 
-;; Rtags
-(use-package rtags
-  :ensure t
-  :config
-  ;; (setq rtags-autostart-diagnostics t)
-  (setq rtags-completions-enabled t)
-  (setq rtags-use-helm t)
-  (eval-after-load 'company
-    '(push 'company-rtags company-backends)))
+;; Rtags is installed separately
+(setq rtags-autostart-diagnostics t)
+(setq rtags-completions-enabled t)
+(setq rtags-use-helm t)
+(eval-after-load 'company
+  '(push 'company-rtags company-backends))
 
 ;; General indentation settings
 (setq-default c-basic-offset 4
@@ -23,8 +20,9 @@
 (c-set-offset (quote cpp-macro) 0 nil)
 
 ;; Compile command
-(setq compile-command "make -C ~/mp/build/ -j6 base_app")
+(setq compile-command "ninja -C ~/mp/build-ninja/ base_app")
 
-;; Open .h and .cl files in c++-mode
+;; Open these files in c++-mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))

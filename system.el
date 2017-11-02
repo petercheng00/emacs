@@ -77,15 +77,6 @@
   (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
   (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
 
-;; Dependency for rtags
-(use-package popup
-  :ensure t)
-
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install))
-
 ;; Space modeline
 (use-package spaceline
   :ensure t
@@ -100,11 +91,6 @@
 ;; Transpose frames
 (use-package transpose-frame
   :ensure t)
-
-;; Show time in modeline
-(setq display-time-default-load-average nil)
-(setq display-time-day-and-date t)
-(display-time-mode)
 
 ;; Ediff split settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)

@@ -16,7 +16,7 @@
  '(magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
  '(package-selected-packages
    (quote
-    (groovy-mode zenburn-theme yasnippet ws-butler use-package undo-tree transpose-frame spaceline smooth-scrolling smartparens rtags rainbow-identifiers rainbow-delimiters pdf-tools org multiple-cursors magit hlinum highlight-indent-guides helm-projectile golden-ratio git-gutter-fringe framemove flycheck fireplace deft company bash-completion avy-zap anzu aggressive-indent ace-window 0xc)))
+    (yasnippet anzu groovy-mode ws-butler transpose-frame smooth-scrolling smartparens rainbow-delimiters pdf-tools org magit hlinum highlight-indent-guides helm-projectile golden-ratio git-gutter-fringe framemove flycheck fireplace deft company bash-completion avy-zap ace-window 0xc)))
  '(safe-local-variable-values
    (quote
     ((eval when

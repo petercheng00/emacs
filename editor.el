@@ -1,17 +1,5 @@
 ;; Editor appearance, navigation, and input
 
-;; Always maintain correct indentation
-(use-package aggressive-indent
-  :ensure t
-  :config
-  (add-to-list
-   'aggressive-indent-dont-indent-if
-   '(and (derived-mode-p 'c++-mode)
-         (null (string-match "\\([;{}]\\|\\b\\(if\\|for\\|while\\)\\b\\)"
-                             (thing-at-point 'line)))))
-  ;;(global-aggressive-indent-mode))
-  )
-
 ;; Completion front-end
 (use-package company
   :ensure t
@@ -26,7 +14,8 @@
 (use-package flycheck
   :ensure t
   :config
-  (global-flycheck-mode))
+  (global-flycheck-mode)
+  (setq flycheck-shellcheck-follow-sources nil))
 
 ;; Show git line diffs in gutter
 (use-package git-gutter-fringe
@@ -34,24 +23,11 @@
   :config
   (global-git-gutter-mode))
 
-;; (use-package highlight-indent-guides
-  ;; :ensure t
-  ;; :config
-  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  ;; (setq highlight-indent-guides-method 'column))
-
-(use-package multiple-cursors
-  :ensure t)
-
 ;; Colorful delimiters
 (use-package rainbow-delimiters
   :ensure t
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-
-;; Color-themed identifiers
-(use-package rainbow-identifiers
-  :ensure t)
 
 (use-package smooth-scrolling
   :ensure t
@@ -75,6 +51,7 @@
 (use-package yasnippet
   :ensure t
   :config
+  (setq yas-snippet-dirs '("~/emacs/snippets"))
   (yas-reload-all)
   (add-hook 'prog-mode-hook 'yas-minor-mode)
   (add-hook 'ess-mode-hook 'yas-minor-mode)
@@ -103,12 +80,6 @@
 
 ;; Fringe size
 (fringe-mode '(15 . 15))
-
-;; Sticky function headers
-;; (semantic-mode t)
-;; (global-semantic-stickyfunc-mode t)
-;; (global-semantic-decoration-mode t)
-;; (global-semantic-highlight-func-mode t)
 
 ;; Show matching parentheses
 (show-paren-mode 1)

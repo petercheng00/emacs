@@ -19,11 +19,7 @@
 
 ;; Organizer
 (use-package org
-  :ensure t
-  :config
-  (setq org-startup-indented t)
-  (setq org-startup-truncated t))
-
+  :ensure t)
 ;; Project grouping
 (use-package projectile
   :ensure t

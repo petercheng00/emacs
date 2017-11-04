@@ -116,6 +116,11 @@
 ;; No vertical splits allowed
 (setq split-height-threshold nil)
 
+;; No bell sound on windows
+(if (eq system-type 'windows-nt)
+    (setq visible-bell 1)
+)
+
 (defun fullscreen-triple ()
   (interactive)
   (toggle-frame-fullscreen)

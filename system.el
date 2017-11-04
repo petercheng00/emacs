@@ -65,6 +65,7 @@
  (setq helm-imenu-fuzzy-match t)
  (setq helm-apropos-fuzzy-match t)
  (setq helm-lisp-fuzzy-completion t)
+ (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
  (helm-mode 1)
  (add-hook 'eshell-mode-hook
            #'(lambda ()

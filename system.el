@@ -43,13 +43,6 @@
   (diminish 'undo-tree-mode)
   (diminish 'yas-minor-mode))
 
-;; Move between frames with arrow keys
-(use-package framemove
-  :ensure t
-  :config
-  (windmove-default-keybindings)
-  (setq framemove-hook-into-windmove t))
-
 ;; Helm
 (use-package helm
  :ensure t
@@ -65,11 +58,24 @@
  (setq helm-imenu-fuzzy-match t)
  (setq helm-apropos-fuzzy-match t)
  (setq helm-lisp-fuzzy-completion t)
+ (setq helm-exit-idle-delay 0)
  (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
+ (define-key helm-find-files-map (kbd "C-<backspace>") 'helm-find-files-up-one-level)
  (helm-mode 1)
  (add-hook 'eshell-mode-hook
            #'(lambda ()
                (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history))))
+
+;; Lsp-mode
+(use-package lsp-mode
+  :ensure t)
+
+(use-package lsp-ui
+  :ensure t
+  :config
+  ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
 
 ;; Git porcelain
 (use-package magit
@@ -116,10 +122,14 @@
 ;; No vertical splits allowed
 (setq split-height-threshold nil)
 
-;; No bell sound on windows
-(if (eq system-type 'windows-nt)
-    (setq visible-bell 1)
-)
+;; Flash modeline instead of bell sound
+(setq ring-bell-function
+      (lambda ()
+        (let ((orig-fg (face-foreground 'mode-line)))
+          (set-face-foreground 'mode-line "#555555")
+          (run-with-idle-timer 0.1 nil
+                               (lambda (fg) (set-face-foreground 'mode-line fg))
+                               orig-fg))))
 
 (defun fullscreen-triple ()
   (interactive)

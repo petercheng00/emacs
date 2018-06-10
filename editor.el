@@ -72,14 +72,7 @@
 (menu-bar-mode -1)
 
 ;; Line numbers
-(add-hook 'prog-mode-hook 'linum-on)
-
-;; No col/line in modeline
-(column-number-mode -1)
-(line-number-mode -1)
-
-;; Fringe size
-(fringe-mode '(15 . 15))
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; Show matching parentheses
 (show-paren-mode 1)

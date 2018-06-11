@@ -47,12 +47,6 @@
       '(lambda()
          (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
 
-(let ((ansi-color-apply-face-function
-       (lambda (beg end face)
-         (when face
-           (put-text-property beg end 'face face)))))
-  (ansi-color-apply-on-region (point-min) (point-max)))
-
 (defun eshell-ido-complete-command-history ()
   (interactive)
   (eshell-kill-input)

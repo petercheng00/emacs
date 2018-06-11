@@ -1,8 +1,9 @@
 ;; C/C++ Development Settings
 
 ;; Ccls
-(require 'ccls)
-(setq ccls-executable "/home/pcheng/libraries/ccls/release/ccls")
+(when (file-directory-p "/home/pcheng/libraries/ccls")
+    (require 'ccls)
+    (setq ccls-executable "/home/pcheng/libraries/ccls/release/ccls"))
 
 ;; General indentation settings
 (setq-default c-basic-offset 4

@@ -20,6 +20,12 @@
 ;; Organizer
 (use-package org
   :ensure t)
+
+;; Org->hugo
+(use-package ox-hugo
+  :ensure t
+  :after ox)
+
 ;; Project grouping
 (use-package projectile
   :ensure t

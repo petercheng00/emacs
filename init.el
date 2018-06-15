@@ -43,8 +43,7 @@
 (bind-key "M-y" 'helm-show-kill-ring)
 (bind-key "M-z" 'avy-zap-to-char-dwim)
 
-;; (bind-key "C-." 'rtags-imenu)
-
+(bind-key "C-." 'lsp-ui-imenu)
 (bind-key "C-c SPC" 'avy-goto-char-2)
 (bind-key "C-c d" 'delete-horizontal-space)
 (bind-key "C-c e" 'flycheck-next-error)

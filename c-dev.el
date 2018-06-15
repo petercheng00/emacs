@@ -3,7 +3,8 @@
 ;; Ccls
 (when (file-directory-p "/home/pcheng/libraries/ccls")
     (require 'ccls)
-    (setq ccls-executable "/home/pcheng/libraries/ccls/release/ccls"))
+    (setq ccls-executable "/home/pcheng/libraries/ccls/release/ccls")
+    (setq ccls-extra-init-params '(:index (:threads 2))))
 
 ;; General indentation settings
 (setq-default c-basic-offset 4

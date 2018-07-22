@@ -43,6 +43,12 @@
   (diminish 'undo-tree-mode)
   (diminish 'yas-minor-mode))
 
+;; Jupyter support
+(use-package ein
+  :ensure t
+  :config
+  (setq ein:jupyter-default-notebook-directory "~"))
+
 ;; Helm
 (use-package helm
  :ensure t

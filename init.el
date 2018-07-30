@@ -2,8 +2,8 @@
 ;; Load this from .emacs
 
 ;; Machine-specific things
-(add-to-list 'load-path "~/libraries/emacs-ccls")
-(setq compile-command "ninja -C ~/mp/build base_app")
+(add-to-list 'load-path "~/libraries/emacs-cquery")
+(setq compile-command "ninja -C ~/mp/build base_app unit_tests")
 
 ;; Path to local libraries
 (add-to-list 'load-path "~/emacs")
@@ -49,20 +49,17 @@
 (bind-key "C-c e" 'flycheck-next-error)
 (bind-key "C-c f" 'helm-projectile-find-file-in-known-projects)
 (bind-key "C-c i" 'send-invisible)
-(bind-key "C-c m" 'remove-dos-eol)
+(bind-key "C-c m" 'mc/edit-lines)
 (bind-key "C-c o" 'helm-occur)
 (bind-key "C-c r" 'replace-string)
 (bind-key "C-c x" 'eshell)
 (bind-key "C-c z" 'avy-zap-to-char)
 
 (bind-key "C-c C-SPC" 'avy-goto-line)
-;; (bind-key "C-c C-f" 'rtags-fixit)
-;; (bind-key "C-c C-n" 'rtags-next-diag)
-;; (bind-key "C-c C-p" 'rtags-previous-diag)
+(bind-key "C-c C-p" 'fill-paragraph)
+(bind-key* "C-c C-l" 'helm-eshell-history)
 (bind-key "C-c C-r" 'query-replace)
 (bind-key "C-c C-x" 'create-eshell)
-
-;; (bind-key "C-c C-S-r" 'rtags-rename-symbol)
 
 (bind-key "C-x b" 'helm-mini)
 (bind-key "C-x g" 'magit-status)

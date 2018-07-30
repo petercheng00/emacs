@@ -70,11 +70,21 @@
  (helm-mode 1)
  (add-hook 'eshell-mode-hook
            #'(lambda ()
-               (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history))))
+               (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)
+               (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring))))
+(use-package helm-ag
+  :ensure t)
+(use-package helm-rg
+  :ensure t)
 
 ;; Lsp-mode
 (use-package lsp-mode
   :ensure t)
+
+(use-package company-lsp
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
 
 (use-package lsp-ui
   :ensure t
@@ -89,6 +99,16 @@
   :config
   (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
   (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
+
+;; Show todos in magit
+;; (use-package magit-todos
+  ;; :ensure t
+  ;; :config
+  ;; (magit-todos-mode))
+
+;; Multiple cursors
+(use-package multiple-cursors
+  :ensure t)
 
 ;; Space modeline
 (use-package spaceline

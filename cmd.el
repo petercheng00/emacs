@@ -17,6 +17,11 @@
             (local-set-key (kbd "<right>") 'right-char)
             ))
 
+;; Open shell in current buffer
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*shell*")
+              display-buffer-same-window))
+
 (defun shell-hook ()
   (linum-mode -1)
   (setq show-trailing-whitespace nil))
@@ -36,16 +41,6 @@
   (let ((eshell-name (read-string "eshell name: " nil)))
     (eshell '1)
     (rename-buffer (concat "*" eshell-name "*"))))
-
-(defun eshell-clear-buffer ()
-  "Clear terminal"
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)
-    (eshell-send-input)))
-(add-hook 'eshell-mode-hook
-      '(lambda()
-         (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
 
 (defun eshell-ido-complete-command-history ()
   (interactive)

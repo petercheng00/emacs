@@ -1,10 +1,11 @@
 ;; C/C++ Development Settings
 
-;; Ccls
-(when (file-directory-p "/home/pcheng/libraries/ccls")
-    (require 'ccls)
-    (setq ccls-executable "/home/pcheng/libraries/ccls/release/ccls")
-    (setq ccls-extra-init-params '(:index (:threads 2))))
+;; Cquery
+(when (file-directory-p "/home/pcheng/libraries/cquery")
+    (require 'cquery)
+    (setq cquery-executable "/home/pcheng/libraries/cquery/build/release/bin/cquery")
+    (setq cquery-extra-init-params '(:index (:threads 2)))
+    (add-hook 'c++-mode-hook 'lsp-cquery-enable))
 
 ;; General indentation settings
 (setq-default c-basic-offset 4
@@ -23,4 +24,3 @@
 (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
 
-(add-hook 'c++-mode-hook 'lsp-ccls-enable)

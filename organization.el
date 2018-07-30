@@ -31,4 +31,4 @@
   :ensure t
   :config
   (setq projectile-enable-caching t)
-  (projectile-global-mode))
+  (projectile-mode))

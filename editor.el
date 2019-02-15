@@ -1,5 +1,8 @@
 ;; Editor appearance, navigation, and input
 
+(use-package clang-format
+  :ensure t)
+
 ;; Completion front-end
 (use-package company
   :ensure t
@@ -82,9 +85,6 @@
 
 ;; Break subwords by camel case
 (add-hook 'prog-mode-hook 'subword-mode)
-
-;; Add lines when at end of buffer
-(setq next-line-add-newlines t)
 
 (defun delete-horizontal-space-forward ()
   "*Delete all spaces and tabs after point."

@@ -1,11 +1,17 @@
 ;; C/C++ Development Settings
 
 ;; Cquery
-(when (file-directory-p "/home/pcheng/libraries/cquery")
-    (require 'cquery)
-    (setq cquery-executable "/home/pcheng/libraries/cquery/build/release/bin/cquery")
-    (setq cquery-extra-init-params '(:index (:threads 2)))
-    (add-hook 'c++-mode-hook 'lsp-cquery-enable))
+(when (file-directory-p "/home/pcheng/libraries/ccls")
+  (use-package eglot
+    :ensure t
+    :config
+    (add-hook 'c++-mode-hook 'eglot-ensure)))
+
+
+  ;; (setq ccls-executable "~/libraries/ccls/Release/ccls"))
+  ;; (use-package ccls
+    ;; :hook ((c-mode c++-mode objc-mode) .
+           ;; (lambda () (cl-pushnew #'company-lsp company-backends) (require 'ccls) (lsp)))))
 
 ;; General indentation settings
 (setq-default c-basic-offset 4

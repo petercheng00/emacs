@@ -14,7 +14,7 @@
  '(line-number-mode nil)
  '(magit-log-arguments '("--graph" "--color" "--decorate" "-n100"))
  '(package-selected-packages
-   '(ein helm-projectile company-lsp magit-todos multiple-cursors rg helm-rg lsp-ui lsp-mode helm-ag yasnippet anzu groovy-mode ws-butler transpose-frame smooth-scrolling smartparens rainbow-delimiters pdf-tools org magit hlinum highlight-indent-guides golden-ratio git-gutter-fringe framemove flycheck fireplace deft company bash-completion avy-zap ace-window 0xc))
+   '(clang-format ein helm-projectile company-lsp magit-todos multiple-cursors rg helm-rg lsp-mode helm-ag yasnippet anzu groovy-mode ws-butler transpose-frame smooth-scrolling smartparens rainbow-delimiters pdf-tools org magit hlinum highlight-indent-guides golden-ratio git-gutter-fringe framemove flycheck fireplace deft company bash-completion avy-zap ace-window 0xc))
  '(safe-local-variable-values
    '((eval when
            (require 'rainbow-mode nil t)

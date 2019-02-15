@@ -2,7 +2,7 @@
 ;; Load this from .emacs
 
 ;; Machine-specific things
-(add-to-list 'load-path "~/libraries/emacs-cquery")
+(add-to-list 'load-path "~/libraries/emacs-ccls")
 (setq compile-command "ninja -C ~/mp/build base_app unit_tests")
 
 ;; Path to local libraries
@@ -47,7 +47,7 @@
 (bind-key "C-c SPC" 'avy-goto-char-2)
 (bind-key "C-c d" 'delete-horizontal-space)
 (bind-key "C-c e" 'flycheck-next-error)
-(bind-key "C-c f" 'helm-projectile-find-file-in-known-projects)
+(bind-key "C-c f" 'clang-format-region)
 (bind-key "C-c i" 'send-invisible)
 (bind-key "C-c m" 'mc/edit-lines)
 (bind-key "C-c o" 'helm-occur)
@@ -56,10 +56,16 @@
 (bind-key "C-c z" 'avy-zap-to-char)
 
 (bind-key "C-c C-SPC" 'avy-goto-line)
-(bind-key "C-c C-p" 'fill-paragraph)
 (bind-key* "C-c C-l" 'helm-eshell-history)
 (bind-key "C-c C-r" 'query-replace)
 (bind-key "C-c C-x" 'create-eshell)
+
+(bind-key* "C-c C-b" (lambda () (interactive) (ccls-navigate "U")))
+(bind-key* "C-c C-f" (lambda () (interactive) (ccls-navigate "D")))
+(bind-key* "C-c C-p" (lambda () (interactive) (ccls-navigate "L")))
+(bind-key* "C-c C-n" (lambda () (interactive) (ccls-navigate "R")))
+
+(bind-key "C-c C-R" 'lsp-rename)
 
 (bind-key "C-x b" 'helm-mini)
 (bind-key "C-x g" 'magit-status)

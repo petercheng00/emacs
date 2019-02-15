@@ -4,13 +4,14 @@
 (use-package ace-window
   :ensure t)
 
+;; Disabled because it's currently showing wrong numbers
 ;; Show search status
-(use-package anzu
-  :ensure t
-  :config
-  (setq anzu-mode-lighter "")
-  (setq anzu-cons-mode-line-p nil)
-  (global-anzu-mode +1))
+;; (use-package anzu
+;;   :ensure t
+;;   :config
+;;   (setq anzu-mode-lighter "")
+;;   (setq anzu-cons-mode-line-p nil)
+;;   (global-anzu-mode +1))
 
 ;; Set-based completion
 (use-package avy
@@ -77,21 +78,20 @@
 (use-package helm-rg
   :ensure t)
 
-;; Lsp-mode
-(use-package lsp-mode
-  :ensure t)
+;; (use-package lsp-mode
+  ;; :commands lsp
+  ;; :config (require 'lsp-clients))
 
-(use-package company-lsp
-  :ensure t
-  :config
-  (push 'company-lsp company-backends))
+;; (use-package company-lsp
+  ;; :commands company-lsp)
 
-(use-package lsp-ui
-  :ensure t
-  :config
-  ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
+
+;; (use-package lsp-ui
+;;   :ensure t
+;;   :config
+;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+;;   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+;;   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
 
 ;; Git porcelain
 (use-package magit
@@ -163,3 +163,9 @@
   (when (< (count-windows) 3)
       (split-window-horizontally)
       (balance-windows)))
+
+(defun clear2 ()
+  "Clear the eshell buffer."
+  (let ((inhibit-read-only t))
+    (erase-buffer)
+    (eshell-send-input)))

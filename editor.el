@@ -8,7 +8,6 @@
   :ensure t
   :config
   (global-company-mode)
-  (setq company-async-timeout 10)
   (define-key company-active-map (kbd "M-n") nil)
   (define-key company-active-map (kbd "M-p") nil)
   (define-key company-active-map (kbd "C-n") #'company-select-next)

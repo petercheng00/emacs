@@ -7,12 +7,6 @@
     :config
     (add-hook 'c++-mode-hook 'eglot-ensure)))
 
-
-  ;; (setq ccls-executable "~/libraries/ccls/Release/ccls"))
-  ;; (use-package ccls
-    ;; :hook ((c-mode c++-mode objc-mode) .
-           ;; (lambda () (cl-pushnew #'company-lsp company-backends) (require 'ccls) (lsp)))))
-
 ;; General indentation settings
 (setq-default c-basic-offset 4
               tab-width 4

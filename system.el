@@ -4,14 +4,13 @@
 (use-package ace-window
   :ensure t)
 
-;; Disabled because it's currently showing wrong numbers
 ;; Show search status
-;; (use-package anzu
-;;   :ensure t
-;;   :config
-;;   (setq anzu-mode-lighter "")
-;;   (setq anzu-cons-mode-line-p nil)
-;;   (global-anzu-mode +1))
+(use-package anzu
+  :ensure t
+  :config
+  (setq anzu-mode-lighter "")
+  (setq anzu-cons-mode-line-p nil)
+  (global-anzu-mode +1))
 
 ;; Set-based completion
 (use-package avy
@@ -78,33 +77,12 @@
 (use-package helm-rg
   :ensure t)
 
-;; (use-package lsp-mode
-  ;; :commands lsp
-  ;; :config (require 'lsp-clients))
-
-;; (use-package company-lsp
-  ;; :commands company-lsp)
-
-
-;; (use-package lsp-ui
-;;   :ensure t
-;;   :config
-;;   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-;;   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-;;   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references))
-
 ;; Git porcelain
 (use-package magit
   :ensure t
   :config
   (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
   (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
-
-;; Show todos in magit
-;; (use-package magit-todos
-  ;; :ensure t
-  ;; :config
-  ;; (magit-todos-mode))
 
 ;; Multiple cursors
 (use-package multiple-cursors

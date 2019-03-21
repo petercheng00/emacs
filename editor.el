@@ -31,12 +31,6 @@
   :config
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(use-package smooth-scrolling
-  :ensure t
-  :config
-  (setq smooth-scroll-margin 5)
-  smooth-scrolling-mode)
-
 ;; Undo tree
 (use-package undo-tree
   :ensure t
@@ -100,7 +94,6 @@
   (interactive)
   ;; (setq buffer-display-table (make-display-table))
   (aset buffer-display-table ?\^M []))
-
 
 (defun gcm-scroll-down ()
   (interactive)

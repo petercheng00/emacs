@@ -34,7 +34,6 @@
 (bind-key "M-;" 'comment-line-or-region)
 (bind-key "M-/" 'hippie-expand)
 (bind-key "M-?" 'company-complete)
-(bind-key "M-i" 'lsp-ui-sideline-mode)
 (bind-key "M-n" 'gcm-scroll-down)
 (bind-key "M-o" 'next-multiframe-window)
 (bind-key "M-O" 'previous-multiframe-window)
@@ -43,7 +42,6 @@
 (bind-key "M-y" 'helm-show-kill-ring)
 (bind-key "M-z" 'avy-zap-to-char-dwim)
 
-(bind-key "C-." 'lsp-ui-imenu)
 (bind-key "C-c SPC" 'avy-goto-char-2)
 (bind-key "C-c d" 'delete-horizontal-space)
 (bind-key "C-c e" 'flycheck-next-error)
@@ -64,8 +62,6 @@
 (bind-key* "C-c C-f" (lambda () (interactive) (ccls-navigate "D")))
 (bind-key* "C-c C-p" (lambda () (interactive) (ccls-navigate "L")))
 (bind-key* "C-c C-n" (lambda () (interactive) (ccls-navigate "R")))
-
-(bind-key "C-c C-R" 'lsp-rename)
 
 (bind-key "C-x b" 'helm-mini)
 (bind-key "C-x g" 'magit-status)

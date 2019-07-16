@@ -8,15 +8,6 @@
 (add-hook 'shell-mode-hook 'shell-hook)
 (add-hook 'eshell-mode-hook 'shell-hook)
 
-;; Add arrow key navigation to eshell
-(add-hook 'eshell-mode-hook
-		  (lambda ()
-            (local-set-key (kbd "<up>") 'previous-line)
-            (local-set-key (kbd "<down>") 'next-line)
-            (local-set-key (kbd "<left>") 'left-char)
-            (local-set-key (kbd "<right>") 'right-char)
-            ))
-
 ;; Open shell in current buffer
 (add-to-list 'display-buffer-alist
              `(,(rx bos "*shell*")

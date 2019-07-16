@@ -1,11 +1,7 @@
 ;; C/C++ Development Settings
 
-;; Cquery
-(when (file-directory-p "/home/pcheng/libraries/ccls")
-  (use-package eglot
-    :ensure t
-    :config
-    (add-hook 'c++-mode-hook 'eglot-ensure)))
+(use-package ccls
+  :ensure t)
 
 ;; General indentation settings
 (setq-default c-basic-offset 4

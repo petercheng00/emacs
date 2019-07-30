@@ -3,6 +3,11 @@
 (use-package ccls
   :ensure t)
 
+;; Use company-capf (talks to eglot) in c++ mode
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (set (make-local-variable 'company-backends) '(company-capf))))
+
 ;; General indentation settings
 (setq-default c-basic-offset 4
               tab-width 4

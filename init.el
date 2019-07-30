@@ -43,6 +43,7 @@
 
 (bind-key "C-c SPC" 'avy-goto-line)
 (bind-key "C-c ." 'eglot-code-actions)
+(bind-key "C-c a" 'org-agenda)
 (bind-key "C-c d" 'delete-horizontal-space)
 (bind-key "C-c e" 'flycheck-next-error)
 (bind-key "C-c f" 'clang-format-region)
@@ -56,7 +57,7 @@
 (bind-key "C-c x" 'eshell)
 (bind-key "C-c z" 'avy-zap-to-char)
 
-(bind-key "C-c C-SPC" 'avy-goto-char)
+(bind-key "C-c C-SPC" 'avy-goto-char-2)
 (bind-key* "C-c C-l" 'helm-eshell-history)
 (bind-key "C-c C-r" 'query-replace)
 (bind-key "C-c C-x" 'create-eshell)

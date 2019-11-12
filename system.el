@@ -18,11 +18,6 @@
 (use-package bind-key
   :ensure t)
 
-;; Calculator
-(use-package calculator
-  :ensure t
-  :defer t)
-
 ;; LSP support
 (use-package eglot
   :ensure t
@@ -87,6 +82,9 @@
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
   (which-function-mode)
   (spaceline-toggle-which-function-on))
+
+(use-package sudo-edit
+  :ensure t)
 
 ;; Transpose frames
 (use-package transpose-frame

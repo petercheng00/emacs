@@ -2,7 +2,7 @@
 ;; Load this from .emacs
 
 ;; Machine-specific things
-(setq compile-command "ninja -C ~/mp/build-clang base_app unit_tests")
+(setq compile-command "ninja -C ~/mp/build base_app unit_tests eos_c_api_test")
 
 ;; Path to local libraries
 (add-to-list 'load-path "~/emacs")
@@ -23,7 +23,7 @@
 ;; Keybinds
 (bind-key [C-mouse-4] '(lambda () (interactive) (change-font-height +4)))
 (bind-key [C-mouse-5] '(lambda () (interactive) (change-font-height -4)))
-(bind-key* [C-return] 'calculator)
+(bind-key* [C-return] 'calc)
 
 (bind-key [f5] 'recompile)
 (bind-key [f11] 'fullscreen-triple)
@@ -46,7 +46,8 @@
 (bind-key "C-c a" 'org-agenda)
 (bind-key "C-c d" 'delete-horizontal-space)
 (bind-key "C-c e" 'flycheck-next-error)
-(bind-key "C-c f" 'clang-format-region)
+(bind-key "C-c f" 'find-file-in-project-by-selected)
+(bind-key "C-c g" 'rgrep)
 (bind-key "C-c h" 'eglot-help-at-point)
 (bind-key "C-c i" 'send-invisible)
 (bind-key "C-c l" 'aweshell-autosuggest)

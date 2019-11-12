@@ -3,6 +3,9 @@
 (use-package clang-format
   :ensure t)
 
+(use-package cmake-mode
+  :ensure t)
+
 ;; Completion front-end
 (use-package company
   :ensure t
@@ -40,7 +43,10 @@
   (setq undo-tree-auto-save-history t)
   (setq undo-tree-history-directory-alist
     (quote (("" . "~/.emacs.d/undo_hist"))))
-  (setq undo-tree-enable-undo-in-region nil))
+  (setq undo-tree-enable-undo-in-region nil)
+  (setq undo-limit 800000)
+  (setq undo-strong-limit 1200000)
+  (setq undo-outer-limit 12000000))
 
 ;; Trim trailing whitespace on modified lines
 (use-package ws-butler

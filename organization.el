@@ -1,10 +1,9 @@
 ;; Project management and organization
 
-;; Helm interface to projectile
-(use-package helm-projectile
+(use-package find-file-in-project
   :ensure t
   :config
-  (helm-projectile-on))
+  (setq ffip-use-rust-fd t))
 
 ;; Organizer
 (use-package org
@@ -15,10 +14,3 @@
   :ensure t
   :after ox)
 
-;; Project grouping
-(use-package projectile
-  :ensure t
-  :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (setq projectile-enable-caching t)
-  (projectile-global-mode))

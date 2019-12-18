@@ -1,8 +1,5 @@
 ;; C/C++ Development Settings
 
-(use-package ccls
-  :ensure t)
-
 ;; Use company-capf (talks to eglot) in c++ mode
 (add-hook 'c++-mode-hook
           (lambda ()

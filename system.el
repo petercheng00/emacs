@@ -22,7 +22,6 @@
 (use-package eglot
   :ensure t
   :config
-  ;; (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd" "-index-file=/home/pcheng/mp/mp_vision/clangd.dex"))
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure))

@@ -37,16 +37,12 @@
 
 ;; Undo tree
 (use-package undo-tree
-  :ensure t
-  :config
-  (global-undo-tree-mode)
-  (setq undo-tree-auto-save-history t)
-  (setq undo-tree-history-directory-alist
-    (quote (("" . "~/.emacs.d/undo_hist"))))
-  (setq undo-tree-enable-undo-in-region nil)
-  (setq undo-limit 800000)
-  (setq undo-strong-limit 1200000)
-  (setq undo-outer-limit 12000000))
+:ensure t
+:config
+(global-undo-tree-mode)
+ (setq undo-tree-auto-save-history t)
+ (setq undo-tree-history-directory-alist
+   (quote (("" . "~/.emacs.d/undo_hist")))))
 
 ;; Trim trailing whitespace on modified lines
 (use-package ws-butler

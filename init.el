@@ -14,7 +14,7 @@
 (load-library "editor")
 (load-library "organization")
 (load-library "system")
-(load-library "term")
+(load-library "terminal")
 
 ;; Customization file
 (setq custom-file "~/emacs/custom.el")

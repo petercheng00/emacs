@@ -16,13 +16,6 @@
   (define-key company-active-map (kbd "C-n") #'company-select-next)
   (define-key company-active-map (kbd "C-p") #'company-select-previous))
 
-;; Using flymake currently
-;; (use-package flycheck
-;;   :ensure t
-;;   :config
-;;   (global-flycheck-mode)
-;;   (setq flycheck-shellcheck-follow-sources nil))
-
 ;; Show git line diffs in gutter
 (use-package git-gutter-fringe
   :ensure t

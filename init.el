@@ -11,10 +11,10 @@
 ;; Init files
 (load-library "packages")
 (load-library "c-dev")
-(load-library "cmd")
 (load-library "editor")
 (load-library "organization")
 (load-library "system")
+(load-library "term")
 
 ;; Customization file
 (setq custom-file "~/emacs/custom.el")
@@ -31,7 +31,6 @@
 (bind-key "M-," 'xref-pop-marker-stack)
 (bind-key "M-." 'xref-find-definitions)
 (bind-key "M-;" 'comment-line-or-region)
-;; (bind-key "M-/" 'hippie-expand)
 (bind-key "M-/" 'company-complete)
 (bind-key "M-n" 'gcm-scroll-down)
 (bind-key "M-o" 'next-multiframe-window)
@@ -50,19 +49,16 @@
 (bind-key "C-c g" 'helm-rg)
 (bind-key "C-c h" 'eglot-help-at-point)
 (bind-key "C-c i" 'send-invisible)
-(bind-key "C-c l" 'aweshell-autosuggest)
 (bind-key "C-c m" 'mc/edit-lines)
 (bind-key "C-c o" 'ff-find-related-file)
 (bind-key "C-c r" 'replace-string)
 (bind-key "C-c s" 'helm-occur)
-(bind-key "C-c u" 'undo-propose)
-(bind-key "C-c x" 'eshell)
+(bind-key "C-c x" 'vterm-toggle)
 (bind-key "C-c z" 'avy-zap-to-char)
 
 (bind-key "C-c C-SPC" 'avy-goto-char-2)
-(bind-key* "C-c C-l" 'helm-eshell-history)
 (bind-key "C-c C-r" 'query-replace)
-(bind-key "C-c C-x" 'create-eshell)
+(bind-key "C-c C-x" 'vterm)
 
 (bind-key "C-x b" 'helm-mini)
 (bind-key "C-x g" 'magit-status)

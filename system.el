@@ -23,8 +23,10 @@
   :ensure t
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
+  (add-to-list 'eglot-server-programs '((python-mode) "/home/pcheng/anaconda3/bin/pyls"))
   (add-hook 'c-mode-hook 'eglot-ensure)
-  (add-hook 'c++-mode-hook 'eglot-ensure))
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  (add-hook 'python-mode-hook 'eglot-ensure))
 
 ;; Jupyter support
 (use-package ein
@@ -37,7 +39,6 @@
  :ensure t
  :config
  (require 'helm-config)
- (require 'helm-eshell)
  (helm-autoresize-mode 1)
  (setq helm-split-window-in-side-p t)
  (setq helm-recentf-fuzzy-match t)
@@ -48,15 +49,8 @@
  (setq helm-apropos-fuzzy-match t)
  (setq helm-lisp-fuzzy-completion t)
  (setq helm-exit-idle-delay 0)
- (define-key helm-find-files-map "\t" 'helm-execute-persistent-action)
- (define-key helm-find-files-map (kbd "C-<backspace>") 'helm-find-files-up-one-level)
- (helm-mode 1)
- (add-hook 'eshell-mode-hook
-           #'(lambda ()
-               (define-key eshell-mode-map (kbd "C-c C-l")  'helm-eshell-history)
-               (define-key shell-mode-map (kbd "C-c C-l") 'helm-comint-input-ring))))
-(use-package helm-ag
-  :ensure t)
+ (helm-mode 1))
+
 (use-package helm-rg
   :ensure t)
 
@@ -127,9 +121,3 @@
   (when (< (count-windows) 3)
       (split-window-horizontally)
       (balance-windows)))
-
-(defun clear2 ()
-  "Clear the eshell buffer."
-  (let ((inhibit-read-only t))
-    (erase-buffer)
-    (eshell-send-input)))

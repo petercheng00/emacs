@@ -25,7 +25,7 @@
 (bind-key [C-mouse-5] '(lambda () (interactive) (change-font-height -4)))
 (bind-key* [C-return] 'calc)
 
-(bind-key [f5] 'recompile)
+(bind-key* [f5] 'recompile)
 (bind-key [f11] 'fullscreen-triple)
 
 (bind-key "M-," 'xref-pop-marker-stack)

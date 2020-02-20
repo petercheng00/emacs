@@ -10,12 +10,13 @@
  '(custom-safe-themes
    '("01b2830f44925d13b3e34eba4d1dd34af4c6c197aeb53fbe0f52aefe13e60f0d" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(fci-rule-color "#383838")
+ '(ff-ignore-include t)
  '(helm-show-completion-display-function 'helm-show-completion-default-display-function)
  '(line-number-mode nil)
  '(magit-log-arguments '("--graph" "--color" "--decorate" "-n100") t)
  '(org-startup-truncated t)
  '(package-selected-packages
-   '(vterm-toggle conda find-file-in-project cmake-mode sudo-edit org-bullets ccls clang-format ein helm-projectile company-lsp magit-todos multiple-cursors rg helm-rg helm-ag yasnippet anzu groovy-mode ws-butler transpose-frame smartparens rainbow-delimiters pdf-tools org magit hlinum highlight-indent-guides golden-ratio git-gutter-fringe framemove flycheck fireplace deft company bash-completion avy-zap ace-window 0xc))
+   '(flymake-shellcheck shellcheck vterm-toggle conda find-file-in-project cmake-mode sudo-edit org-bullets ccls clang-format ein helm-projectile company-lsp magit-todos multiple-cursors rg helm-rg helm-ag yasnippet anzu groovy-mode ws-butler transpose-frame smartparens rainbow-delimiters pdf-tools org magit hlinum highlight-indent-guides golden-ratio git-gutter-fringe framemove flycheck fireplace deft company bash-completion avy-zap ace-window 0xc))
  '(safe-local-variable-values
    '((eval when
            (require 'rainbow-mode nil t)

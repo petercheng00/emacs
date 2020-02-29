@@ -86,6 +86,8 @@
 ;; Break subwords by camel case
 (add-hook 'prog-mode-hook 'subword-mode)
 
+(setq cmake-tab-width 4)
+
 (defun delete-horizontal-space-forward ()
   "*Delete all spaces and tabs after point."
   (interactive "*")

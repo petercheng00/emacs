@@ -23,7 +23,7 @@
   :ensure t
   :config
   (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
-  (add-to-list 'eglot-server-programs '((python-mode) "/home/pcheng/anaconda3/bin/pyls"))
+  (add-to-list 'eglot-server-programs '((python-mode) "pyls"))
   (add-hook 'c-mode-hook 'eglot-ensure)
   (add-hook 'c++-mode-hook 'eglot-ensure)
   (add-hook 'python-mode-hook 'eglot-ensure))

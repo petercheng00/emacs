@@ -226,6 +226,7 @@ This makes indentation inside src blocks work
 Word wrap
 #+BEGIN_SRC emacs-lisp
 (setq org-startup-truncated nil)
+(add-hook 'org-mode-hook 'toggle-word-wrap)
 #+END_SRC
 Automatic indentation and hide prefix asterisks
 #+BEGIN_SRC emacs-lisp

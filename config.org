@@ -3,26 +3,32 @@
   (setq compile-command (getenv "COMPILE_COMMAND"))
 #+END_SRC
 * Package Management
-This code sets up use-package
+Set up straight.el
 #+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/") t)
-  (unless package--initialized (package-initialize))
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-  (require 'use-package)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+END_SRC
+Use use-package as a frontend for straight
+#+BEGIN_SRC emacs-lisp
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
 #+END_SRC
 * Keybindings
 Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+BEGIN_SRC emacs-lisp
-  (use-package bind-key
-    :ensure t)
+  (use-package bind-key)
 
   (bind-key* [C-return] 'calc)
-
   (bind-key* [f5] 'recompile)
   (bind-key [f11] 'toggle-frame-fullscreen)
 
@@ -70,7 +76,6 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 For profiling startup time
 #+BEGIN_SRC emacs-lisp
   (use-package esup
-    :ensure t
     :commands (esup)
     :config (setq esup-user-init-file (file-truename "~/emacs/init.el")))
 #+END_SRC
@@ -95,7 +100,6 @@ Store backups in os tmp instead of cluttering working dir.
 * Helm
 #+BEGIN_SRC emacs-lisp
   (use-package helm
-    :ensure t
     :config
     (require 'helm-config)
     (helm-autoresize-mode 1)
@@ -109,18 +113,15 @@ Store backups in os tmp instead of cluttering working dir.
     (setq helm-lisp-fuzzy-completion t)
     (setq helm-exit-idle-delay 0)
     (helm-mode 1))
-  (use-package helm-rg
-    :ensure t)
+  (use-package helm-rg)
 #+END_SRC
 * Terminal
 #+BEGIN_SRC emacs-lisp
-  (use-package vterm
-    :ensure t)
+  (use-package vterm)
 #+END_SRC
 This will open a new vterm or toggle to an existing one
 #+BEGIN_SRC emacs-lisp
   (use-package vterm-toggle
-    :ensure t
     :config
     (setq vterm-toggle-fullscreen-p nil)
     (add-to-list 'display-buffer-alist
@@ -128,20 +129,20 @@ This will open a new vterm or toggle to an existing one
                    (display-buffer-reuse-window display-buffer-same-window))))
 #+END_SRC
 
-
-
 * Appearance
 The main theme
 #+BEGIN_SRC emacs-lisp
   (use-package zenburn-theme
-    :ensure t
     :config
     (load-theme 'zenburn t))
+#+END_SRC
+Icons
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons)
 #+END_SRC
 Modeline theme
 #+BEGIN_SRC emacs-lisp
   (use-package spaceline
-    :ensure t
     :config
     (require 'spaceline-config)
     (spaceline-emacs-theme)
@@ -153,7 +154,6 @@ Modeline theme
 Anzu shows x/n position during isearch
 #+BEGIN_SRC emacs-lisp
   (use-package anzu
-    :ensure t
     :config
     (setq anzu-mode-lighter "")
     (setq anzu-cons-mode-line-p nil)
@@ -184,20 +184,17 @@ Highlight matching parens, and use same colors for matching pairs.
 #+BEGIN_SRC emacs-lisp
   (show-paren-mode 1)
   (use-package rainbow-delimiters
-    :ensure t
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 * File Management
 For opening files as sudo
 #+BEGIN_SRC emacs-lisp
-  (use-package sudo-edit
-    :ensure t)
+  (use-package sudo-edit)
 #+END_SRC
 Find file based on version control. Use fd instead of find.
 #+BEGIN_SRC emacs-lisp
   (use-package find-file-in-project
-    :ensure t
     :config
     (setq ffip-use-rust-fd t))
 #+END_SRC
@@ -221,14 +218,12 @@ Save window configs
 Clean up trailing whtitespace on edited lines on save
 #+BEGIN_SRC emacs-lisp
   (use-package ws-butler
-    :ensure t
     :config
     (ws-butler-global-mode))
 #+END_SRC
 * Org Mode
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-    :ensure t)
+  (use-package org)
 #+END_SRC
 This makes indentation inside src blocks work
 #+BEGIN_SRC emacs-lisp
@@ -245,14 +240,12 @@ Automatic indentation and hide prefix asterisks
 For publishing org to hugo
 #+BEGIN_SRC emacs-lisp
   (use-package ox-hugo
-    :ensure t
     :after ox)
 #+END_SRC
 * Version Control
 Git porcelain
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t
     :config
     (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
     (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
@@ -260,21 +253,16 @@ Git porcelain
 Show git status per-line in the fringe
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter-fringe
-    :ensure t
     :config
     (global-git-gutter-mode))
 #+END_SRC
 * General Editing
 #+BEGIN_SRC emacs-lisp
   (global-subword-mode 1)
-  (use-package avy
-    :ensure t)
-  (use-package avy-zap
-    :ensure t)
-  (use-package multiple-cursors
-    :ensure t)
+  (use-package avy)
+  (use-package avy-zap)
+  (use-package multiple-cursors)
   (use-package undo-tree
-    :ensure t
     :config
     (global-undo-tree-mode)
     (setq undo-tree-auto-save-history t)
@@ -284,7 +272,6 @@ Show git status per-line in the fringe
 * Completion
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :ensure t
     :config
     (global-company-mode)
     (define-key company-active-map (kbd "M-n") nil)
@@ -320,14 +307,12 @@ Use company-capf to talk to eglot
 #+END_SRC
 Other packages
 #+BEGIN_SRC emacs-lisp
-  (use-package clang-format
-    :ensure t)
+  (use-package clang-format)
 #+END_SRC
 * Static Analysis
 Shellcheck for shell scripts
 #+BEGIN_SRC emacs-lisp
   (use-package flymake-shellcheck
-    :ensure t
     :commands flymake-shellcheck-load
     :init
     (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
@@ -336,7 +321,6 @@ Shellcheck for shell scripts
 Eglot for C++ with ccls and python with pyls
 #+BEGIN_SRC emacs-lisp
   (use-package eglot
-    :ensure t
     :config
     (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
     (add-to-list 'eglot-server-programs '((python-mode) "pyls"))
@@ -346,7 +330,6 @@ Eglot for C++ with ccls and python with pyls
 #+END_SRC
 * CMake
 #+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode
-    :ensure t)
+  (use-package cmake-mode)
   (setq cmake-tab-width 4)
 #+END_SRC

@@ -142,14 +142,8 @@ Icons
 #+END_SRC
 Modeline theme
 #+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    :config
-    (require 'spaceline-config)
-    (spaceline-emacs-theme)
-    (setq powerline-default-separator 'slant)
-    (setq spaceline-highlight-face-func 'spaceline-highlight-face-modified)
-    (which-function-mode)
-    (spaceline-toggle-which-function-on))
+  (use-package doom-modeline
+    :init (doom-modeline-mode 1))
 #+END_SRC
 Anzu shows x/n position during isearch
 #+BEGIN_SRC emacs-lisp

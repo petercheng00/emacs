@@ -1,3 +1,0 @@
-#name : timer
-# --
-Proftimer timer("${1:timer}");

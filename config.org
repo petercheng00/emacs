@@ -2,6 +2,19 @@
 #+BEGIN_SRC emacs-lisp
   (setq compile-command (getenv "COMPILE_COMMAND"))
 #+END_SRC
+* Package Management
+This code sets up use-package
+#+BEGIN_SRC emacs-lisp
+  (require 'package)
+  (setq package-enable-at-startup nil)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+  (unless package--initialized (package-initialize))
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+  (require 'use-package)
+#+END_SRC
 * Keybindings
 Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+BEGIN_SRC emacs-lisp
@@ -52,20 +65,25 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   (bind-key "C-h SPC" 'helm-all-mark-rings)
 #+END_SRC
-* Package Management
-This code sets up use-package
+
+* Emacs System Settings
+For profiling startup time
 #+BEGIN_SRC emacs-lisp
-  (require 'package)
-  (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/") t)
-  (unless package--initialized (package-initialize))
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-  (require 'use-package)
+  (use-package esup
+    :ensure t
+    :commands (esup)
+    :config (setq esup-user-init-file (file-truename "~/emacs/init.el")))
 #+END_SRC
-* File Management
+Confirm quit
+#+BEGIN_SRC emacs-lisp
+(setq confirm-kill-emacs 'y-or-n-p)
+#+END_SRC
+Stop custom from cluttering my init file
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load custom-file))
+#+END_SRC
 Store backups in os tmp instead of cluttering working dir.
 #+BEGIN_SRC emacs-lisp
   (setq backup-directory-alist
@@ -73,36 +91,7 @@ Store backups in os tmp instead of cluttering working dir.
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
 #+END_SRC
-For opening files as sudo
-#+BEGIN_SRC emacs-lisp
-  (use-package sudo-edit
-    :ensure t)
-#+END_SRC
-Find file based on version control. Use fd instead of find.
-#+BEGIN_SRC emacs-lisp
-  (use-package find-file-in-project
-    :ensure t
-    :config
-    (setq ffip-use-rust-fd t))
-#+END_SRC
-* General Editing
-#+BEGIN_SRC emacs-lisp
-  (global-subword-mode 1)
-  (use-package avy
-    :ensure t)
-  (use-package avy-zap
-    :ensure t)
-  (use-package multiple-cursors
-    :ensure t)
-  (use-package undo-tree
-    :ensure t
-    :config
-    (global-undo-tree-mode)
-    (setq undo-tree-auto-save-history t)
-    (setq undo-tree-history-directory-alist
-          (quote (("" . "~/.emacs.d/undo_hist")))))
-  (setq confirm-kill-emacs 'y-or-n-p)
-#+END_SRC
+
 * Helm
 #+BEGIN_SRC emacs-lisp
   (use-package helm
@@ -123,6 +112,24 @@ Find file based on version control. Use fd instead of find.
   (use-package helm-rg
     :ensure t)
 #+END_SRC
+* Terminal
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+    :ensure t)
+#+END_SRC
+This will open a new vterm or toggle to an existing one
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm-toggle
+    :ensure t
+    :config
+    (setq vterm-toggle-fullscreen-p nil)
+    (add-to-list 'display-buffer-alist
+                 '((lambda(bufname _) (with-current-buffer bufname (equal major-mode 'vterm-mode)))
+                   (display-buffer-reuse-window display-buffer-same-window))))
+#+END_SRC
+
+
+
 * Appearance
 The main theme
 #+BEGIN_SRC emacs-lisp
@@ -181,6 +188,43 @@ Highlight matching parens, and use same colors for matching pairs.
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
+* File Management
+For opening files as sudo
+#+BEGIN_SRC emacs-lisp
+  (use-package sudo-edit
+    :ensure t)
+#+END_SRC
+Find file based on version control. Use fd instead of find.
+#+BEGIN_SRC emacs-lisp
+  (use-package find-file-in-project
+    :ensure t
+    :config
+    (setq ffip-use-rust-fd t))
+#+END_SRC
+* Buffers
+Auto-update buffers on file change
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode 1)
+#+END_SRC
+Don't auto-split vertically
+#+BEGIN_SRC emacs-lisp
+  (setq split-height-threshold nil)
+#+END_SRC
+Scroll compilation buffer until first error
+#+BEGIN_SRC emacs-lisp
+  (setq compilation-scroll-output 'first-error)
+#+END_SRC
+Save window configs
+#+BEGIN_SRC emacs-lisp
+  (winner-mode)
+#+END_SRC
+Clean up trailing whtitespace on edited lines on save
+#+BEGIN_SRC emacs-lisp
+  (use-package ws-butler
+    :ensure t
+    :config
+    (ws-butler-global-mode))
+#+END_SRC
 * Org Mode
 #+BEGIN_SRC emacs-lisp
   (use-package org
@@ -220,44 +264,33 @@ Show git status per-line in the fringe
     :config
     (global-git-gutter-mode))
 #+END_SRC
-* Buffers
-Auto-update buffers on file change
+* General Editing
 #+BEGIN_SRC emacs-lisp
-  (global-auto-revert-mode 1)
-#+END_SRC
-Don't auto-split vertically
-#+BEGIN_SRC emacs-lisp
-  (setq split-height-threshold nil)
-#+END_SRC
-Scroll compilation buffer until first error
-#+BEGIN_SRC emacs-lisp
-  (setq compilation-scroll-output 'first-error)
-#+END_SRC
-Save window configs
-#+BEGIN_SRC emacs-lisp
-  (winner-mode)
-#+END_SRC
-Clean up trailing whtitespace on edited lines on save
-#+BEGIN_SRC emacs-lisp
-  (use-package ws-butler
-    :ensure t
-    :config
-    (ws-butler-global-mode))
-#+END_SRC
-* Terminal
-#+BEGIN_SRC emacs-lisp
-  (use-package vterm
+  (global-subword-mode 1)
+  (use-package avy
     :ensure t)
-#+END_SRC
-This will open a new vterm or toggle to an existing one
-#+BEGIN_SRC emacs-lisp
-  (use-package vterm-toggle
+  (use-package avy-zap
+    :ensure t)
+  (use-package multiple-cursors
+    :ensure t)
+  (use-package undo-tree
     :ensure t
     :config
-    (setq vterm-toggle-fullscreen-p nil)
-    (add-to-list 'display-buffer-alist
-                 '((lambda(bufname _) (with-current-buffer bufname (equal major-mode 'vterm-mode)))
-                   (display-buffer-reuse-window display-buffer-same-window))))
+    (global-undo-tree-mode)
+    (setq undo-tree-auto-save-history t)
+    (setq undo-tree-history-directory-alist
+          (quote (("" . "~/.emacs.d/undo_hist")))))
+#+END_SRC
+* Completion
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (global-company-mode)
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n") #'company-select-next)
+    (define-key company-active-map (kbd "C-p") #'company-select-previous))
 #+END_SRC
 * C++ Development
 #+BEGIN_SRC emacs-lisp
@@ -316,15 +349,4 @@ Eglot for C++ with ccls and python with pyls
   (use-package cmake-mode
     :ensure t)
   (setq cmake-tab-width 4)
-#+END_SRC
-* Completion
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :config
-    (global-company-mode)
-    (define-key company-active-map (kbd "M-n") nil)
-    (define-key company-active-map (kbd "M-p") nil)
-    (define-key company-active-map (kbd "C-n") #'company-select-next)
-    (define-key company-active-map (kbd "C-p") #'company-select-previous))
 #+END_SRC

@@ -136,16 +136,16 @@ The main theme
     :config
     (load-theme 'zenburn t))
 #+END_SRC
-Icons
+Icons used by doom-modeline
 #+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons)
+  (use-package all-the-icons
+    :config
+    (setq all-the-icons-scale-factor 1.0))
 #+END_SRC
 Modeline theme
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1)
-    :config
-    (setq doom-modeline-height 24))
+    :init (doom-modeline-mode 1))
 #+END_SRC
 Anzu shows x/n position during isearch
 #+BEGIN_SRC emacs-lisp

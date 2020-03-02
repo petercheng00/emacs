@@ -143,7 +143,9 @@ Icons
 Modeline theme
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1))
+    :init (doom-modeline-mode 1)
+    :config
+    (setq doom-modeline-height 24))
 #+END_SRC
 Anzu shows x/n position during isearch
 #+BEGIN_SRC emacs-lisp

@@ -45,9 +45,10 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c SPC" 'avy-goto-line)
   (bind-key "C-c ." 'eglot-code-actions)
   (bind-key "C-c d" 'delete-horizontal-space)
-  (bind-key "C-c f" 'find-file-in-project-by-selected)
-  (bind-key "C-c g" 'counsel-rg)
+  (bind-key "C-c f" 'counsel-git)
+  (bind-key "C-c g" 'counsel-git-grep)
   (bind-key "C-c h" 'eglot-help-at-point)
+  (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
   (bind-key "C-c n" 'flymake-goto-next-error)
   (bind-key "C-c o" 'ff-find-related-file)
@@ -99,7 +100,8 @@ Store backups in os tmp instead of cluttering working dir.
     :config
     (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
-    (setq enable-recursive-minibuffers t))
+    (setq enable-recursive-minibuffers t)
+    (setq ivy-use-selectable-prompt t))
   (use-package counsel
     :config
     (counsel-mode 1))
@@ -190,12 +192,6 @@ Highlight matching parens, and use same colors for matching pairs.
 For opening files as sudo
 #+BEGIN_SRC emacs-lisp
   (use-package sudo-edit)
-#+END_SRC
-Find file based on version control. Use fd instead of find.
-#+BEGIN_SRC emacs-lisp
-  (use-package find-file-in-project
-    :config
-    (setq ffip-use-rust-fd t))
 #+END_SRC
 * Buffers
 Auto-update buffers on file change

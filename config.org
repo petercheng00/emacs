@@ -139,6 +139,9 @@ Scale factor helps to not increase modeline size (default is 1.2 for some reason
   (use-package all-the-icons
     :config
     (setq all-the-icons-scale-factor 1.0))
+  (use-package all-the-icons-dired
+    :config
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+END_SRC
 Modeline theme. Disable major mode icon since it gets uncentered with 1.0 scale factor set above.
 #+BEGIN_SRC emacs-lisp

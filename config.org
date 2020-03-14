@@ -46,7 +46,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c ." 'eglot-code-actions)
   (bind-key "C-c d" 'delete-horizontal-space)
   (bind-key "C-c f" 'counsel-git)
-  (bind-key "C-c g" 'counsel-git-grep)
+  (bind-key "C-c g" 'counsel-rg)
   (bind-key "C-c h" 'eglot-help-at-point)
   (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
@@ -115,6 +115,11 @@ Store backups in os tmp instead of cluttering working dir.
     (ivy-rich-mode 1))
 #+END_SRC
 * Terminal
+Unlimited scrollback
+#+BEGIN_SRC emacs-lisp
+  (setq term-buffer-maximum-size 0)
+#+END_SRC
+Vterm is a term mode that integrates really nicely with emacs keybindings
 #+BEGIN_SRC emacs-lisp
   (use-package vterm)
 #+END_SRC
@@ -254,6 +259,7 @@ Show git status per-line in the fringe
 #+END_SRC
 * General Editing
 #+BEGIN_SRC emacs-lisp
+  (setq-default indent-tabs-mode nil)
   (global-subword-mode 1)
   (use-package avy)
   (use-package avy-zap)
@@ -275,6 +281,12 @@ Show git status per-line in the fringe
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous))
 #+END_SRC
+yasnippet allows eglot to provide templated completions
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    :config
+    (yas-global-mode 1))
+#+END_SRC
 * C++ Development
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -290,7 +302,8 @@ No indents for macros, opening parens, or namespaces
 More indentation settings
 #+BEGIN_SRC emacs-lisp
   (add-hook 'c++-mode-hook
-            (setq c-basic-offset 4
+            (setq c-default-style "linux"
+                  c-basic-offset 4
                   tab-width 4
                   indent-tabs-mode nil))
 #+END_SRC
@@ -326,6 +339,7 @@ Eglot for C++ with ccls and python with pyls
 #+END_SRC
 * CMake
 #+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode)
-  (setq cmake-tab-width 4)
+  (use-package cmake-mode
+    :config
+    (setq cmake-tab-width 4))
 #+END_SRC

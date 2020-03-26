@@ -121,7 +121,9 @@ Unlimited scrollback
 #+END_SRC
 Vterm is a term mode that integrates really nicely with emacs keybindings
 #+BEGIN_SRC emacs-lisp
-  (use-package vterm)
+  (use-package vterm
+    :config
+    (setq vterm-max-scrollback 10000))
 #+END_SRC
 This will open a new vterm or toggle to an existing one
 #+BEGIN_SRC emacs-lisp

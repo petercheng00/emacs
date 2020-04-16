@@ -51,16 +51,16 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
   (bind-key "C-c n" 'flymake-goto-next-error)
-  (bind-key "C-c o" 'ff-find-related-file)
+  (bind-key "C-c o" 'projectile-find-other-file)
   (bind-key "C-c p" 'flymake-goto-prev-error)
   (bind-key "C-c r" 'replace-string)
   (bind-key "C-c s" 'swiper-all)
-  (bind-key "C-c x" 'vterm-toggle)
+  (bind-key "C-c x" 'multi-vterm-next)
   (bind-key "C-c z" 'avy-zap-to-char)
 
   (bind-key "C-c C-SPC" 'avy-goto-char-2)
   (bind-key "C-c C-r" 'query-replace)
-  (bind-key "C-c C-x" 'vterm)
+  (bind-key "C-c C-x" 'multi-vterm)
 
   (bind-key "C-x g" 'magit-status)
   (bind-key "C-x C-b" 'ibuffer)
@@ -123,18 +123,12 @@ Vterm is a term mode that integrates really nicely with emacs keybindings
 #+BEGIN_SRC emacs-lisp
   (use-package vterm
     :config
-    (setq vterm-max-scrollback 10000))
+    (setq vterm-max-scrollback 100000))
 #+END_SRC
-This will open a new vterm or toggle to an existing one
+For managing multiple vterm buffers
 #+BEGIN_SRC emacs-lisp
-  (use-package vterm-toggle
-    :config
-    (setq vterm-toggle-fullscreen-p nil)
-    (add-to-list 'display-buffer-alist
-                 '((lambda(bufname _) (with-current-buffer bufname (equal major-mode 'vterm-mode)))
-                   (display-buffer-reuse-window display-buffer-same-window))))
+  (use-package multi-vterm)
 #+END_SRC
-
 * Appearance
 The main theme
 #+BEGIN_SRC emacs-lisp
@@ -306,6 +300,17 @@ yasnippet allows eglot to provide templated completions
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
+#+END_SRC
+Clang-format on save
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook
+            (lambda ()
+              (when (member major-mode '(c-mode c++-mode glsl-mode))
+                (progn
+                  (when (locate-dominating-file "." ".clang-format")
+                    (clang-format-buffer))
+                  ;; Return nil, to continue saving.
+                  nil))))
 #+END_SRC
 No indents for macros, opening parens, or namespaces
 #+BEGIN_SRC emacs-lisp

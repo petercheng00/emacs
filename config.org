@@ -50,15 +50,14 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c h" 'eglot-help-at-point)
   (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
-  (bind-key "C-c n" 'flymake-goto-next-error)
   (bind-key "C-c o" 'projectile-find-other-file)
-  (bind-key "C-c p" 'flymake-goto-prev-error)
   (bind-key "C-c r" 'replace-string)
   (bind-key "C-c s" 'swiper-all)
   (bind-key "C-c x" 'multi-vterm-next)
   (bind-key "C-c z" 'avy-zap-to-char)
 
   (bind-key "C-c C-SPC" 'avy-goto-char-2)
+  (bind-key* "C-c C-f" 'counsel-fzf)
   (bind-key "C-c C-r" 'query-replace)
   (bind-key "C-c C-x" 'multi-vterm)
 
@@ -251,6 +250,15 @@ For publishing org to hugo
   (use-package ox-hugo
     :after ox)
 #+END_SRC
+* Project Management
+Projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :config
+    (projectile-mode 1)
+    (setq projectile-completion-system 'ivy)
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
+#+END_SRC
 * Version Control
 Git porcelain
 #+BEGIN_SRC emacs-lisp
@@ -266,6 +274,7 @@ Show git status per-line in the fringe
     (global-git-gutter-mode))
 #+END_SRC
 * General Editing
+Turned off undo-tree history since the files get humongous. Should just figure out how to limit size
 #+BEGIN_SRC emacs-lisp
   (setq-default indent-tabs-mode nil)
   (global-subword-mode 1)
@@ -275,7 +284,7 @@ Show git status per-line in the fringe
   (use-package undo-tree
     :config
     (global-undo-tree-mode)
-    (setq undo-tree-auto-save-history t)
+    (setq undo-tree-auto-save-history nil)
     (setq undo-tree-history-directory-alist
           (quote (("" . "~/.emacs.d/undo_hist")))))
 #+END_SRC
@@ -349,12 +358,23 @@ Shellcheck for shell scripts
 Eglot for C++ with ccls and python with pyls
 #+BEGIN_SRC emacs-lisp
   (use-package eglot
+        :config
+        (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
+        (add-to-list 'eglot-server-programs '((python-mode) "pyls"))
+        (add-hook 'c-mode-hook 'eglot-ensure)
+        (add-hook 'c++-mode-hook 'eglot-ensure)
+        (add-hook 'python-mode-hook 'eglot-ensure))
+
+  ; eglot+straight fix: https://github.com/hlissner/doom-emacs/issues/3269
+  (defun project-root (project)
+      (car (project-roots project)))
+#+END_SRC
+Dumb jump for rg-based jump-to-definition
+#+BEGIN_SRC emacs-lisp
+  (use-package dumb-jump
     :config
-    (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
-    (add-to-list 'eglot-server-programs '((python-mode) "pyls"))
-    (add-hook 'c-mode-hook 'eglot-ensure)
-    (add-hook 'c++-mode-hook 'eglot-ensure)
-    (add-hook 'python-mode-hook 'eglot-ensure))
+    (dumb-jump-mode)
+    (setq dumb-jump-selector 'ivy))
 #+END_SRC
 * CMake
 #+BEGIN_SRC emacs-lisp

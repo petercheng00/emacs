@@ -2,27 +2,6 @@
 #+BEGIN_SRC emacs-lisp
   (setq compile-command (getenv "COMPILE_COMMAND"))
 #+END_SRC
-* Package Management
-Set up straight.el
-#+BEGIN_SRC emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-#+END_SRC
-Use use-package as a frontend for straight
-#+BEGIN_SRC emacs-lisp
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
-#+END_SRC
 * Keybindings
 Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+BEGIN_SRC emacs-lisp
@@ -216,7 +195,7 @@ Clean up trailing whtitespace on edited lines on save
     :config
     (ws-butler-global-mode))
 #+END_SRC
-DIsplay terminal colors correctly in compilation buffer
+Display terminal colors correctly in compilation buffer
 #+BEGIN_SRC emacs-lisp
   (require 'ansi-color)
   (defun endless/colorize-compilation ()
@@ -229,9 +208,8 @@ DIsplay terminal colors correctly in compilation buffer
             #'endless/colorize-compilation)
 #+END_SRC
 * Org Mode
-#+BEGIN_SRC emacs-lisp
-  (use-package org)
-#+END_SRC
+(use-package org) should have been called prior to this file, in order to ensure the latest version of org is active.
+
 This makes indentation inside src blocks work
 #+BEGIN_SRC emacs-lisp
   (setq org-src-tab-acts-natively t)

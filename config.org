@@ -22,11 +22,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "M-z" 'avy-zap-to-char-dwim)
 
   (bind-key "C-c SPC" 'avy-goto-line)
-  (bind-key "C-c ." 'eglot-code-actions)
   (bind-key "C-c d" 'delete-horizontal-space)
   (bind-key "C-c f" 'counsel-git)
   (bind-key "C-c g" 'counsel-rg)
-  (bind-key "C-c h" 'eglot-help-at-point)
   (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
   (bind-key "C-c o" 'projectile-find-other-file)
@@ -276,11 +274,12 @@ Turned off undo-tree history since the files get humongous. Should just figure o
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous))
 #+END_SRC
-yasnippet allows eglot to provide templated completions
+Yasnippet for templated insertion
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     :config
     (yas-global-mode 1))
+  (use-package yasnippet-snippets)
 #+END_SRC
 * C++ Development
 #+BEGIN_SRC emacs-lisp
@@ -313,13 +312,6 @@ More indentation settings
                   tab-width 2
                   indent-tabs-mode nil))
 #+END_SRC
-Use company-capf to talk to eglot
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'c++-mode-hook
-            (lambda ()
-              (set (make-local-variable 'company-backends)
-                   '(company-capf))))
-#+END_SRC
 Other packages
 #+BEGIN_SRC emacs-lisp
   (use-package clang-format)
@@ -333,30 +325,38 @@ Shellcheck for shell scripts
     (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
     (add-hook 'sh-mode-hook 'flymake-mode))
 #+END_SRC
-Eglot for C++ with ccls and python with pyls
+Language Server Parser
 #+BEGIN_SRC emacs-lisp
-  (use-package eglot
-        :config
-        (add-to-list 'eglot-server-programs '((c++-mode c-mode) "ccls" "-init={\"clang\": {\"excludeArgs\": [\"-fopenmp=libomp\"]}}"))
-        (add-to-list 'eglot-server-programs '((python-mode) "pyls"))
-        (add-hook 'c-mode-hook 'eglot-ensure)
-        (add-hook 'c++-mode-hook 'eglot-ensure)
-        (add-hook 'python-mode-hook 'eglot-ensure))
+  (use-package lsp-mode :commands lsp)
+  (use-package lsp-ui :commands lsp-ui-mode)
+  (use-package company-lsp :commands company-lsp)
 
-  ; eglot+straight fix: https://github.com/hlissner/doom-emacs/issues/3269
-  (defun project-root (project)
-      (car (project-roots project)))
+  (use-package ccls
+    :hook ((c-mode c++-mode objc-mode cuda-mode) .
+           (lambda () (require 'ccls) (lsp))))
+
+  (use-package ivy-xref
+    :init
+    ;; xref initialization is different in Emacs 27 - there are two different
+    ;; variables which can be set rather than just one
+    (when (>= emacs-major-version 27)
+      (setq xref-show-definitions-function #'ivy-xref-show-defs))
+    ;; Necessary in Emacs <27. In Emacs 27 it will affect all xref-based
+    ;; commands other than xref-find-definitions (e.g. project-find-regexp)
+    ;; as well
+    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 #+END_SRC
 Dumb jump for rg-based jump-to-definition
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
     :config
-    (dumb-jump-mode)
-    (setq dumb-jump-selector 'ivy))
+    (setq dumb-jump-selector 'ivy)
+    (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
 #+END_SRC
 * CMake
 #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
     :config
-    (setq cmake-tab-width 4))
+    (setq cmake-tab-width 2))
 #+END_SRC

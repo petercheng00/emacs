@@ -1,3 +1,6 @@
+; For native-comp
+(setq comp-deferred-compilation t)
+
 ; Set up straight so that we can set up org
 (defvar bootstrap-version)
 (let ((bootstrap-file

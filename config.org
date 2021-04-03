@@ -69,7 +69,11 @@ Store backups in os tmp instead of cluttering working dir.
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
 #+END_SRC
-
+Performance improvements for lsp
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 1024 1024)) ;; 1mb
+#+END_SRC
 * Ivy
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
@@ -327,7 +331,10 @@ Shellcheck for shell scripts
 #+END_SRC
 Language Server Parser
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode :commands lsp)
+  (use-package lsp-mode
+    :commands lsp
+    :config
+    (setq lsp-headerline-breadcrumb-enable nil))
   (use-package lsp-ui :commands lsp-ui-mode)
   (use-package company-lsp :commands company-lsp)
 

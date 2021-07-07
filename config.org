@@ -15,14 +15,14 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "M-." 'xref-find-definitions)
   (bind-key "M-;" 'comment-line)
   (bind-key "M-/" 'company-complete)
-  (bind-key "M-n" (lambda() (interactive) (scroll-up 1)))
-  (bind-key "M-o" 'next-multiframe-window)
-  (bind-key "M-O" 'previous-multiframe-window)
-  (bind-key "M-p" (lambda() (interactive) (scroll-down 1)))
+  (bind-key* "M-n" (lambda() (interactive) (scroll-up 1)))
+  (bind-key "M-o" 'other-window)
+  (bind-key* "M-p" (lambda() (interactive) (scroll-down 1)))
   (bind-key "M-z" 'avy-zap-to-char-dwim)
 
   (bind-key "C-c SPC" 'avy-goto-line)
-  (bind-key "C-c d" 'delete-horizontal-space)
+  (bind-key "C-c a" 'org-agenda)
+  (bind-key "C-c d" 'docker)
   (bind-key "C-c f" 'counsel-git)
   (bind-key "C-c g" 'counsel-rg)
   (bind-key "C-c j" 'counsel-mark-ring)
@@ -126,12 +126,11 @@ Scale factor helps to not increase modeline size (default is 1.2 for some reason
     :config
     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+END_SRC
-Modeline theme. Disable major mode icon since it gets uncentered with 1.0 scale factor set above.
+Modeline theme.
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
-    :init (doom-modeline-mode 1)
-    :config
-    (setq doom-modeline-major-mode-icon nil))
+    :init (doom-modeline-mode 1))
+
 #+END_SRC
 Anzu shows x/n position during isearch
 #+BEGIN_SRC emacs-lisp
@@ -229,6 +228,10 @@ For publishing org to hugo
 #+BEGIN_SRC emacs-lisp
   (use-package ox-hugo
     :after ox)
+#+END_SRC
+Org agenda
+#+BEGIN_SRC emacs-lisp
+  (setq org-agenda-files '("~/org/"))
 #+END_SRC
 * Project Management
 Projectile
@@ -334,13 +337,15 @@ Language Server Parser
   (use-package lsp-mode
     :commands lsp
     :config
+    (setq lsp-clients-clangd-executable "/home/pcheng/io/scripts/clangd_docker.sh")
     (setq lsp-headerline-breadcrumb-enable nil))
+  (use-package lsp-pyright
+    :ensure t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp))))  ; or lsp-deferred
   (use-package lsp-ui :commands lsp-ui-mode)
   (use-package company-lsp :commands company-lsp)
-
-  (use-package ccls
-    :hook ((c-mode c++-mode objc-mode cuda-mode) .
-           (lambda () (require 'ccls) (lsp))))
 
   (use-package ivy-xref
     :init
@@ -361,9 +366,8 @@ Dumb jump for rg-based jump-to-definition
     (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 #+END_SRC
-* CMake
+Docker
 #+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode
-    :config
-    (setq cmake-tab-width 2))
+    (use-package docker)
+  (setq directory-abbrev-alist '(("^/workspaces/custom/src/iron_ox" . "/home/pcheng/io/iron_ox")))
 #+END_SRC

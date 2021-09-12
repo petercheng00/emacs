@@ -116,6 +116,7 @@ The main theme
     :config
     (load-theme 'zenburn t))
 #+END_SRC
+** Modeline
 Icons used by doom-modeline
 Scale factor helps to not increase modeline size (default is 1.2 for some reason)
 #+BEGIN_SRC emacs-lisp
@@ -150,6 +151,11 @@ Flash modeline instead of bell sound
                                  (lambda (fg) (set-face-foreground 'mode-line fg))
                                  orig-fg))))
 #+END_SRC
+column number in modeline
+#+BEGIN_SRC emacs-lisp
+  (column-number-mode)
+#+END_SRC
+** UI Elements
 Disable startup screen and UI elements
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
@@ -159,7 +165,7 @@ Disable startup screen and UI elements
 #+END_SRC
 Show line numbers in code buffers. Turning it on globally slows down terminal buffers and other fast-scrolling buffers.
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+ (global-display-line-numbers-mode)
 #+END_SRC
 Highlight matching parens, and use same colors for matching pairs.
 #+BEGIN_SRC emacs-lisp
@@ -322,6 +328,10 @@ More indentation settings
 Other packages
 #+BEGIN_SRC emacs-lisp
   (use-package clang-format)
+#+END_SRC
+* Python Development
+#+BEGIN_SRC emacs-lisp
+  (use-package pyvenv)
 #+END_SRC
 * Static Analysis
 Shellcheck for shell scripts

@@ -27,7 +27,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c g" 'counsel-rg)
   (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
+  (bind-key "C-c n" 'flycheck-next-error)
   (bind-key "C-c o" 'projectile-find-other-file)
+  (bind-key "C-c p" 'flycheck-previous-error)
   (bind-key "C-c r" 'replace-string)
   (bind-key "C-c s" 'swiper-all)
   (bind-key "C-c x" 'multi-vterm-next)
@@ -342,31 +344,20 @@ Shellcheck for shell scripts
     (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
     (add-hook 'sh-mode-hook 'flymake-mode))
 #+END_SRC
-Language Server Parser
+Python development
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :commands lsp
-    :config
-    (setq lsp-clients-clangd-executable "/home/pcheng/io/scripts/clangd_docker.sh")
-    (setq lsp-headerline-breadcrumb-enable nil))
-  (use-package lsp-pyright
-    :ensure t
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp))))  ; or lsp-deferred
-  (use-package lsp-ui :commands lsp-ui-mode)
-  (use-package company-lsp :commands company-lsp)
-
-  (use-package ivy-xref
-    :init
-    ;; xref initialization is different in Emacs 27 - there are two different
-    ;; variables which can be set rather than just one
-    (when (>= emacs-major-version 27)
-      (setq xref-show-definitions-function #'ivy-xref-show-defs))
-    ;; Necessary in Emacs <27. In Emacs 27 it will affect all xref-based
-    ;; commands other than xref-find-definitions (e.g. project-find-regexp)
-    ;; as well
-    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+        (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht)))))
+          (use-package lsp-mode
+            :config
+              (setq lsp-file-watch-threshold 100000))
+          (use-package flycheck)
+          (use-package lsp-ui)
+          (use-package lsp-pyright
+          :ensure t
+          :hook (python-mode . (lambda ()
+                                  (require 'lsp-pyright)
+                                  (lsp-deferred)
+                                  (flycheck-add-next-checker 'lsp 'python-flake8))))
 #+END_SRC
 Dumb jump for rg-based jump-to-definition
 #+BEGIN_SRC emacs-lisp

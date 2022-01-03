@@ -27,9 +27,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c g" 'counsel-rg)
   (bind-key "C-c j" 'counsel-mark-ring)
   (bind-key "C-c m" 'mc/edit-lines)
-  (bind-key "C-c n" 'flycheck-next-error)
+  (bind-key* "C-c n" 'flycheck-next-error)
   (bind-key "C-c o" 'projectile-find-other-file)
-  (bind-key "C-c p" 'flycheck-previous-error)
+  (bind-key* "C-c p" 'flycheck-previous-error)
   (bind-key "C-c r" 'replace-string)
   (bind-key "C-c s" 'swiper-all)
   (bind-key "C-c x" 'multi-vterm-next)
@@ -48,31 +48,27 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+END_SRC
 
 * Emacs System Settings
-For profiling startup time
 #+BEGIN_SRC emacs-lisp
+  ;; For profiling startup time
   (use-package esup
     :commands (esup)
     :config (setq esup-user-init-file (file-truename "~/emacs/init.el")))
-#+END_SRC
-Confirm quit
-#+BEGIN_SRC emacs-lisp
-(setq confirm-kill-emacs 'y-or-n-p)
-#+END_SRC
-Stop custom from cluttering my init file
-#+BEGIN_SRC emacs-lisp
+
+  ;; Confirm quit
+  (setq confirm-kill-emacs 'y-or-n-p)
+
+  ;; Stop custom from cluttering init file
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (when (file-exists-p custom-file)
     (load custom-file))
-#+END_SRC
-Store backups in os tmp instead of cluttering working dir.
-#+BEGIN_SRC emacs-lisp
+
+  ;; Store backups in os tmp instead of cluttering working dir.
   (setq backup-directory-alist
         `((".*" . ,temporary-file-directory)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
-#+END_SRC
-Performance improvements for lsp
-#+BEGIN_SRC emacs-lisp
+
+  ;; Performance improvements for lsp
   (setq gc-cons-threshold 100000000)
   (setq read-process-output-max (* 1024 1024)) ;; 1mb
 #+END_SRC
@@ -97,18 +93,16 @@ Performance improvements for lsp
     (ivy-rich-mode 1))
 #+END_SRC
 * Terminal
-Unlimited scrollback
 #+BEGIN_SRC emacs-lisp
+  ;; Unlimited scrollback
   (setq term-buffer-maximum-size 0)
-#+END_SRC
-Vterm is a term mode that integrates really nicely with emacs keybindings
-#+BEGIN_SRC emacs-lisp
+
+  ;; Vterm is a term mode that integrates really nicely with emacs keybindings
   (use-package vterm
     :config
     (setq vterm-max-scrollback 100000))
-#+END_SRC
-For managing multiple vterm buffers
-#+BEGIN_SRC emacs-lisp
+
+  ;; For managing multiple vterm buffers
   (use-package multi-vterm)
 #+END_SRC
 * Appearance
@@ -119,32 +113,21 @@ The main theme
     (load-theme 'zenburn t))
 #+END_SRC
 ** Modeline
-Icons used by doom-modeline
-Scale factor helps to not increase modeline size (default is 1.2 for some reason)
 #+BEGIN_SRC emacs-lisp
+  ;; Icons used by doom-modeline
+  ;; Scale factor helps to not increase modeline size (default is 1.2 for some reason)
   (use-package all-the-icons
     :config
     (setq all-the-icons-scale-factor 1.0))
   (use-package all-the-icons-dired
     :config
     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
-#+END_SRC
-Modeline theme.
-#+BEGIN_SRC emacs-lisp
+
+  ;; Modeline theme.
   (use-package doom-modeline
     :init (doom-modeline-mode 1))
 
-#+END_SRC
-Anzu shows x/n position during isearch
-#+BEGIN_SRC emacs-lisp
-  (use-package anzu
-    :config
-    (setq anzu-mode-lighter "")
-    (setq anzu-cons-mode-line-p nil)
-    (global-anzu-mode +1))
-#+END_SRC
-Flash modeline instead of bell sound
-#+BEGIN_SRC emacs-lisp
+  ;; Flash modeline instead of bell sound
   (setq ring-bell-function
         (lambda ()
           (let ((orig-fg (face-foreground 'mode-line)))
@@ -152,60 +135,52 @@ Flash modeline instead of bell sound
             (run-with-idle-timer 0.1 nil
                                  (lambda (fg) (set-face-foreground 'mode-line fg))
                                  orig-fg))))
-#+END_SRC
-column number in modeline
-#+BEGIN_SRC emacs-lisp
+
+  ;; Column number in modeline
   (column-number-mode)
 #+END_SRC
 ** UI Elements
-Disable startup screen and UI elements
 #+BEGIN_SRC emacs-lisp
+  ;; Disable startup screen and UI elements
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (menu-bar-mode -1)
-#+END_SRC
-Show line numbers in code buffers. Turning it on globally slows down terminal buffers and other fast-scrolling buffers.
-#+BEGIN_SRC emacs-lisp
- (global-display-line-numbers-mode)
-#+END_SRC
-Highlight matching parens, and use same colors for matching pairs.
-#+BEGIN_SRC emacs-lisp
+
+  ;; Line numbers.
+  (global-display-line-numbers-mode)
+
+  ;; Highlight matching parens, and use same colors for matching pairs.
   (show-paren-mode 1)
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 * File Management
-For opening files as sudo
 #+BEGIN_SRC emacs-lisp
+  ;; For opening files as sudo
   (use-package sudo-edit)
 #+END_SRC
 * Buffers
-Auto-update buffers on file change
 #+BEGIN_SRC emacs-lisp
+  ;; Auto-update buffers on file change
   (global-auto-revert-mode 1)
-#+END_SRC
-Don't auto-split vertically
-#+BEGIN_SRC emacs-lisp
+
+  ;; Don't auto-split vertically
   (setq split-height-threshold nil)
-#+END_SRC
-Scroll compilation buffer until first error
-#+BEGIN_SRC emacs-lisp
+
+  ;; Scroll compilation buffer until first error
   (setq compilation-scroll-output 'first-error)
-#+END_SRC
-Save window configs
-#+BEGIN_SRC emacs-lisp
+
+  ;; Save window configs
   (winner-mode)
-#+END_SRC
-Clean up trailing whtitespace on edited lines on save
-#+BEGIN_SRC emacs-lisp
+
+  ;; Clean up trailing whtitespace on edited lines on save
   (use-package ws-butler
     :config
     (ws-butler-global-mode))
-#+END_SRC
-Display terminal colors correctly in compilation buffer
-#+BEGIN_SRC emacs-lisp
+
+  ;; Display terminal colors correctly in compilation buffer
   (require 'ansi-color)
   (defun endless/colorize-compilation ()
     "Colorize from `compilation-filter-start' to `point'."
@@ -219,30 +194,24 @@ Display terminal colors correctly in compilation buffer
 * Org Mode
 (use-package org) should have been called prior to this file, in order to ensure the latest version of org is active.
 
-This makes indentation inside src blocks work
 #+BEGIN_SRC emacs-lisp
+  ;; This makes indentation inside src blocks work
   (setq org-src-tab-acts-natively t)
-#+END_SRC
-Word wrap
-#+BEGIN_SRC emacs-lisp
-(setq org-startup-truncated nil)
-(add-hook 'org-mode-hook 'toggle-word-wrap)
-#+END_SRC
-Automatic indentation and hide prefix asterisks
-#+BEGIN_SRC emacs-lisp
+
+  ;; Word wrap
+  (setq org-startup-truncated nil)
+
+  ;; Automatic indentation and hide prefix asterisks
   (add-hook 'org-mode-hook 'org-indent-mode)
-#+END_SRC
-For publishing org to hugo
-#+BEGIN_SRC emacs-lisp
+
+  ;; For publishing org to hugo
   (use-package ox-hugo
     :after ox)
-#+END_SRC
-Org agenda
-#+BEGIN_SRC emacs-lisp
+
+  ;; Org agenda
   (setq org-agenda-files '("~/org/"))
 #+END_SRC
 * Project Management
-Projectile
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :config
@@ -251,15 +220,13 @@ Projectile
     (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
 #+END_SRC
 * Version Control
-Git porcelain
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :config
     (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
     (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
-#+END_SRC
-Show git status per-line in the fringe
-#+BEGIN_SRC emacs-lisp
+
+  ;; Show git status per-line in the fringe
   (use-package git-gutter-fringe
     :config
     (global-git-gutter-mode))
@@ -288,9 +255,8 @@ Turned off undo-tree history since the files get humongous. Should just figure o
     (define-key company-active-map (kbd "M-p") nil)
     (define-key company-active-map (kbd "C-n") #'company-select-next)
     (define-key company-active-map (kbd "C-p") #'company-select-previous))
-#+END_SRC
-Yasnippet for templated insertion
-#+BEGIN_SRC emacs-lisp
+
+  ;; Yasnippet for templated insertion
   (use-package yasnippet
     :config
     (yas-global-mode 1))
@@ -301,9 +267,8 @@ Yasnippet for templated insertion
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
-#+END_SRC
-Clang-format on save
-#+BEGIN_SRC emacs-lisp
+
+  ;; Clang-format on save
   (add-hook 'before-save-hook
             (lambda ()
               (when (member major-mode '(c-mode c++-mode glsl-mode))
@@ -312,63 +277,61 @@ Clang-format on save
                     (clang-format-buffer))
                   ;; Return nil, to continue saving.
                   nil))))
-#+END_SRC
-No indents for macros, opening parens, or namespaces
-#+BEGIN_SRC emacs-lisp
+
+  ;; No indents for macros, opening parens, or namespaces
   (c-set-offset (quote cpp-macro) 0 nil)
   (c-set-offset 'substatement-open 0)
   (c-set-offset 'innamespace 0)
-#+END_SRC
-More indentation settings
-#+BEGIN_SRC emacs-lisp
+
+  ;; More indentation settings
   (add-hook 'c++-mode-hook
             (setq c-default-style "linux"
                   c-basic-offset 2
                   tab-width 2
                   indent-tabs-mode nil))
-#+END_SRC
-Other packages
-#+BEGIN_SRC emacs-lisp
+
   (use-package clang-format)
 #+END_SRC
-* Python Development
-#+BEGIN_SRC emacs-lisp
-  (use-package pyvenv)
-#+END_SRC
 * Static Analysis
-Shellcheck for shell scripts
 #+BEGIN_SRC emacs-lisp
+  ;; Shellcheck for shell scripts
   (use-package flymake-shellcheck
     :commands flymake-shellcheck-load
     :init
     (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
     (add-hook 'sh-mode-hook 'flymake-mode))
-#+END_SRC
-Python development
-#+BEGIN_SRC emacs-lisp
-        (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht)))))
-          (use-package lsp-mode
-            :config
-              (setq lsp-file-watch-threshold 100000))
-          (use-package flycheck)
-          (use-package lsp-ui)
-          (use-package lsp-pyright
-          :ensure t
-          :hook (python-mode . (lambda ()
-                                  (require 'lsp-pyright)
-                                  (lsp-deferred)
-                                  (flycheck-add-next-checker 'lsp 'python-flake8))))
-#+END_SRC
-Dumb jump for rg-based jump-to-definition
-#+BEGIN_SRC emacs-lisp
+
+  ;; Flycheck works better with lsp than flymake.
+  (use-package flycheck)
+
+  ;; Lsp frontend.
+  (use-package lsp-mode
+    :config
+    (setq lsp-file-watch-threshold 100000)
+    ;; Forget lsp watched folders on each start.
+    (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht))))))
+  (use-package lsp-ui)
+
+  ;; Python lsp backend.
+  (use-package lsp-pyright
+    :ensure t
+    ;; Use lsp + flake8 as backends simultaneously.
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp-deferred)
+                           (flycheck-add-next-checker 'lsp 'python-flake8))))
+
+  ;; Dumb jump for rg-based jump-to-definition
   (use-package dumb-jump
     :config
+    ;; Use ivy
     (setq dumb-jump-selector 'ivy)
+    (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+    ;; Add to xref backends.
     (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
-
 #+END_SRC
-Docker
+* Docker
 #+BEGIN_SRC emacs-lisp
-    (use-package docker)
+  (use-package docker)
   (setq directory-abbrev-alist '(("^/workspaces/custom/src/iron_ox" . "/home/pcheng/io/iron_ox")))
 #+END_SRC

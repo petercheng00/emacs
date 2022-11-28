@@ -1,10 +1,10 @@
 * Per-System Settings
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq compile-command (getenv "COMPILE_COMMAND"))
-#+END_SRC
+#+end_src
 * Keybindings
 Using ~bind-key*~ will force precedence over keybinds from a mode map.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package bind-key)
 
   (bind-key* [C-return] 'calc)
@@ -22,16 +22,15 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   (bind-key "C-c SPC" 'avy-goto-line)
   (bind-key "C-c a" 'org-agenda)
-  (bind-key "C-c d" 'docker)
+  (bind-key "C-c b" 'python-black-buffer)
   (bind-key "C-c f" 'counsel-git)
   (bind-key "C-c g" 'counsel-rg)
   (bind-key "C-c j" 'counsel-mark-ring)
+  (bind-key "C-c l" 'flymake-show-buffer-diagnostics)
   (bind-key "C-c m" 'mc/edit-lines)
-  (bind-key* "C-c n" 'flycheck-next-error)
-  (bind-key "C-c o" 'projectile-find-other-file)
-  (bind-key* "C-c p" 'flycheck-previous-error)
+  (bind-key* "C-c n" 'flymake-goto-next-error)
+  (bind-key* "C-c p" 'flymake-goto-prev-error)
   (bind-key "C-c r" 'replace-string)
-  (bind-key "C-c s" 'swiper-all)
   (bind-key "C-c x" 'multi-vterm-next)
   (bind-key "C-c z" 'avy-zap-to-char)
 
@@ -40,20 +39,15 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c C-r" 'query-replace)
   (bind-key "C-c C-x" 'multi-vterm)
 
+  (bind-key "C-x d" 'dirvish-dwim)
   (bind-key "C-x g" 'magit-status)
   (bind-key "C-x C-b" 'ibuffer)
 
-  (bind-key "C-r" 'swiper)
   (bind-key "C-s" 'swiper)
-#+END_SRC
+#+end_src
 
 * Emacs System Settings
-#+BEGIN_SRC emacs-lisp
-  ;; For profiling startup time
-  (use-package esup
-    :commands (esup)
-    :config (setq esup-user-init-file (file-truename "~/emacs/init.el")))
-
+#+begin_src emacs-lisp
   ;; Confirm quit
   (setq confirm-kill-emacs 'y-or-n-p)
 
@@ -67,13 +61,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
         `((".*" . ,temporary-file-directory)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
-
-  ;; Performance improvements for lsp
-  (setq gc-cons-threshold 100000000)
-  (setq read-process-output-max (* 1024 1024)) ;; 1mb
-#+END_SRC
+#+end_src
 * Ivy
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package ivy
     :config
     (ivy-mode 1)
@@ -91,12 +81,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
     :config
     (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
     (ivy-rich-mode 1))
-#+END_SRC
+#+end_src
 * Terminal
-#+BEGIN_SRC emacs-lisp
-  ;; Unlimited scrollback
-  (setq term-buffer-maximum-size 0)
-
+#+begin_src emacs-lisp
   ;; Vterm is a term mode that integrates really nicely with emacs keybindings
   (use-package vterm
     :config
@@ -104,28 +91,33 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   ;; For managing multiple vterm buffers
   (use-package multi-vterm)
-#+END_SRC
+#+end_src
 * Appearance
 The main theme
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package zenburn-theme
     :config
     (load-theme 'zenburn t))
-#+END_SRC
+#+end_src
 ** Modeline
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; Icons used by doom-modeline
-  ;; Scale factor helps to not increase modeline size (default is 1.2 for some reason)
-  (use-package all-the-icons
-    :config
-    (setq all-the-icons-scale-factor 1.0))
+  (use-package all-the-icons)
   (use-package all-the-icons-dired
     :config
     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 
+  ;; Dired alternative
+  (use-package dirvish
+    :ensure t
+    :init
+    ;; Let Dirvish take over Dired globally
+    (dirvish-override-dired-mode))
+
   ;; Modeline theme.
   (use-package doom-modeline
-    :init (doom-modeline-mode 1))
+    :init (doom-modeline-mode 1)
+    :config (setq doom-modeline-buffer-file-name-style 'relative-to-project))
 
   ;; Flash modeline instead of bell sound
   (setq ring-bell-function
@@ -138,9 +130,9 @@ The main theme
 
   ;; Column number in modeline
   (column-number-mode)
-#+END_SRC
+#+end_src
 ** UI Elements
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; Disable startup screen and UI elements
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
@@ -155,14 +147,14 @@ The main theme
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-#+END_SRC
+#+end_src
 * File Management
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; For opening files as sudo
   (use-package sudo-edit)
-#+END_SRC
+#+end_src
 * Buffers
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; Auto-update buffers on file change
   (global-auto-revert-mode 1)
 
@@ -190,11 +182,11 @@ The main theme
 
   (add-hook 'compilation-filter-hook
             #'endless/colorize-compilation)
-#+END_SRC
+#+end_src
 * Org Mode
 (use-package org) should have been called prior to this file, in order to ensure the latest version of org is active.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;; This makes indentation inside src blocks work
   (setq org-src-tab-acts-natively t)
 
@@ -210,30 +202,22 @@ The main theme
 
   ;; Org agenda
   (setq org-agenda-files '("~/org/"))
-#+END_SRC
-* Project Management
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :config
-    (projectile-mode 1)
-    (setq projectile-completion-system 'ivy)
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map))
-#+END_SRC
+#+end_src
 * Version Control
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package magit
     :config
     (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
     (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
 
   ;; Show git status per-line in the fringe
-  (use-package git-gutter-fringe
+  (use-package git-gutter
     :config
     (global-git-gutter-mode))
-#+END_SRC
+#+end_src
 * General Editing
 Turned off undo-tree history since the files get humongous. Should just figure out how to limit size
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
   (global-subword-mode 1)
   (use-package avy)
@@ -245,9 +229,14 @@ Turned off undo-tree history since the files get humongous. Should just figure o
     (setq undo-tree-auto-save-history nil)
     (setq undo-tree-history-directory-alist
           (quote (("" . "~/.emacs.d/undo_hist")))))
-#+END_SRC
+#+end_src
+* LSP
+Using eglot for lsp
+#+begin_src emacs-lisp
+  (add-hook 'prog-mode-hook 'eglot-ensure)
+#+end_src
 * Completion
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (use-package company
     :config
     (global-company-mode)
@@ -261,9 +250,9 @@ Turned off undo-tree history since the files get humongous. Should just figure o
     :config
     (yas-global-mode 1))
   (use-package yasnippet-snippets)
-#+END_SRC
+#+end_src
 * C++ Development
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.cl\\'" . c++-mode))
   (add-to-list 'auto-mode-alist '("\\.inl\\'" . c++-mode))
@@ -291,36 +280,20 @@ Turned off undo-tree history since the files get humongous. Should just figure o
                   indent-tabs-mode nil))
 
   (use-package clang-format)
-#+END_SRC
-* Static Analysis
-#+BEGIN_SRC emacs-lisp
-  ;; Shellcheck for shell scripts
-  (use-package flymake-shellcheck
-    :commands flymake-shellcheck-load
-    :init
-    (add-hook 'sh-mode-hook 'flymake-shellcheck-load)
-    (add-hook 'sh-mode-hook 'flymake-mode))
-
-  ;; Flycheck works better with lsp than flymake.
-  (use-package flycheck)
-
-  ;; Lsp frontend.
-  (use-package lsp-mode
+#+end_src
+* Python Development
+#+begin_src emacs-lisp
+  ;; Black formatter
+  (use-package python-black
     :config
-    (setq lsp-file-watch-threshold 100000)
-    ;; Forget lsp watched folders on each start.
-    (advice-add 'lsp :before (lambda (&rest _args) (eval '(setf (lsp-session-server-id->folders (lsp-session)) (ht))))))
-  (use-package lsp-ui)
-
-  ;; Python lsp backend.
-  (use-package lsp-pyright
-    :ensure t
-    ;; Use lsp + flake8 as backends simultaneously.
-    :hook (python-mode . (lambda ()
-                           (require 'lsp-pyright)
-                           (lsp-deferred)
-                           (flycheck-add-next-checker 'lsp 'python-flake8))))
-
+    :hook (python-mode . python-black-on-save-mode))
+#+end_src
+* Typescript Development
+#+begin_src emacs-lisp
+(use-package typescript-mode)
+#+end_src
+* Static Analysis
+#+begin_src emacs-lisp
   ;; Dumb jump for rg-based jump-to-definition
   (use-package dumb-jump
     :config
@@ -329,9 +302,4 @@ Turned off undo-tree history since the files get humongous. Should just figure o
     (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
     ;; Add to xref backends.
     (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
-#+END_SRC
-* Docker
-#+BEGIN_SRC emacs-lisp
-  (use-package docker)
-  (setq directory-abbrev-alist '(("^/workspaces/custom/src/iron_ox" . "/home/pcheng/io/iron_ox")))
-#+END_SRC
+#+end_src

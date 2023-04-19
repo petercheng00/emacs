@@ -66,8 +66,8 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (use-package vertico
     :init
     (vertico-mode))
-  (use-package vertico-directory
-    :after vertico)
+  ;; (use-package vertico-directory
+  ;;  :after vertico)
   (use-package consult
     :init
     (setq xref-show-xrefs-function #'consult-xref

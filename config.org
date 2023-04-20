@@ -293,3 +293,7 @@ Using eglot for lsp
 #+begin_src emacs-lisp
 (use-package typescript-mode)
 #+end_src
+* Rust Development
+#+begin_src emacs-lisp
+(use-package rust-mode)
+#+end_src

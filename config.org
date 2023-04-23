@@ -59,6 +59,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
         `((".*" . ,temporary-file-directory)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
+
+  ;; For native-comp, don't foreground the warnings buffer.
+  (setq native-comp-async-report-warnings-errors 'silent)
 #+end_src
 * Vertico and friends
 #+begin_src emacs-lisp

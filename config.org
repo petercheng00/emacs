@@ -11,7 +11,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key* [f5] 'recompile)
   (bind-key [f11] 'toggle-frame-fullscreen)
 
-  (bind-key "M-," 'xref-pop-marker-stack)
+  (bind-key "M-," 'xref-go-back)
   (bind-key "M-." 'xref-find-definitions)
   (bind-key "M-;" 'comment-line)
   (bind-key "M-/" 'company-complete)
@@ -184,16 +184,14 @@ The main theme
   (add-hook 'compilation-filter-hook
             #'endless/colorize-compilation)
 
-  ;; Tree sitter stuff is kind of in flux right now
-  ;; ;; Better highlighting
-  ;; (use-package tree-sitter
-  ;;   :config
-  ;;   (global-tree-sitter-mode)
-  ;;   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  ;; Tree-sitter is part of emacs now, but this installs a bunch of languages.
+  (use-package tree-sitter-langs
+     :config
+     (global-tree-sitter-mode)
+     (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
-  ;; (use-package treesit-auto
-  ;;   :config
-  ;;   (global-treesit-auto-mode))
+  ;; For loading recently opened files.
+  (recentf-mode 1)
 #+end_src
 * Org Mode
 (use-package org) should have been called prior to this file, in order to ensure the latest version of org is active.

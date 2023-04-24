@@ -73,7 +73,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (use-package consult
     :init
     (setq xref-show-xrefs-function #'consult-xref
-          xref-show-definitions-function #'consult-xref))
+          xref-show-definitions-function #'consult-xref)
+    ;; Don't filter out dotfiles (e.g. .gitignore)
+    (setq consult-find-args "find ."))
   (use-package marginalia
     :init
     (marginalia-mode))

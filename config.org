@@ -24,6 +24,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c SPC" 'avy-goto-line)
   (bind-key "C-c a" 'org-agenda)
   (bind-key "C-c b" 'python-black-buffer)
+  (bind-key "C-c c" 'copilot-complete)
   (bind-key "C-c e" 'consult-flymake)
   (bind-key "C-c f" 'consult-find)
   (bind-key "C-c g" 'consult-ripgrep)
@@ -322,7 +323,6 @@ Using eglot for lsp
   (add-to-list 'load-path "~/.emacs.d/copilot.el")
   (require 'copilot)
 
-  (define-key copilot-completion-map (kbd "C-c c") 'copilot-complete)
   (define-key copilot-completion-map (kbd "C-c n") 'copilot-next-completion)
   (define-key copilot-completion-map (kbd "C-c p") 'copilot-previous-completion)
   (define-key copilot-completion-map (kbd "C-c RET") 'copilot-accept-completion)

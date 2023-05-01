@@ -137,6 +137,9 @@ The main theme
 
   ;; Column number in modeline
   (column-number-mode)
+  ;; Date and time
+  (setq display-time-day-and-date t)
+  (display-time-mode)
 #+end_src
 ** UI Elements
 #+begin_src emacs-lisp

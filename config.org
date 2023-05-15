@@ -22,6 +22,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "M-z" 'avy-zap-to-char-dwim)
 
   (bind-key "C-c SPC" 'avy-goto-line)
+  (bind-key "C-c RET" 'copilot-accept-completion)
   (bind-key "C-c a" 'org-agenda)
   (bind-key "C-c b" 'python-black-buffer)
   (bind-key "C-c c" 'copilot-complete)
@@ -227,7 +228,10 @@ The main theme
   (use-package magit
     :config
     (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
-    (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat"))))
+    (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat")))
+    (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
+    (remove-hook 'magit-refs-sections-hook 'magit-insert-remote-branches)
+    )
 
   ;; Show git status per-line in the fringe
   (use-package git-gutter
@@ -328,7 +332,6 @@ Using eglot for lsp
 
   (define-key copilot-completion-map (kbd "C-c n") 'copilot-next-completion)
   (define-key copilot-completion-map (kbd "C-c p") 'copilot-previous-completion)
-  (define-key copilot-completion-map (kbd "C-c RET") 'copilot-accept-completion)
   (define-key copilot-completion-map (kbd "C-g") 'copilot-clear-overlay)
 
   (add-hook 'prog-mode-hook 'copilot-mode)

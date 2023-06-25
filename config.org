@@ -89,7 +89,19 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+begin_src emacs-lisp
   ;; Eat - emulate a terminal
   ;; Plays nicer with zsh stuff than vterm.
-  (use-package eat)
+  (use-package eat
+    :config
+    ;; Forward M-delete to the terminal.
+    (setq eat-semi-char-non-bound-keys
+          (delete [M-delete] eat-semi-char-non-bound-keys))
+    ;; Don't forward M-o to the terminal
+    (setq eat-semi-char-non-bound-keys
+          (append (list
+                   [?\e ?o]
+                   )
+                  eat-semi-char-non-bound-keys))
+    (eat-update-semi-char-mode-map)
+    (eat-reload))
 
 #+end_src
 * Appearance

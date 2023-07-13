@@ -31,11 +31,12 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c g" 'consult-ripgrep)
   (bind-key "C-c i" 'consult-imenu)
   (bind-key "C-c r" 'replace-string)
-  (bind-key "C-c x" 'eat)
+  (bind-key "C-c x" 'multi-vterm-next)
   (bind-key "C-c z" 'avy-zap-to-char)
 
   (bind-key "C-c C-SPC" 'avy-goto-char-2)
   (bind-key "C-c C-r" 'query-replace)
+  (bind-key "C-c C-x" 'multi-vterm)
 
   (bind-key "C-x b" 'consult-buffer)
   (bind-key "C-x d" 'dirvish-dwim)
@@ -87,22 +88,13 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+end_src
 * Terminal
 #+begin_src emacs-lisp
-  ;; Eat - emulate a terminal
-  ;; Plays nicer with zsh stuff than vterm.
-  (use-package eat
+  ;; Vterm is a term mode that integrates really nicely with emacs keybindings
+  (use-package vterm
     :config
-    ;; Forward M-delete to the terminal.
-    (setq eat-semi-char-non-bound-keys
-          (delete [M-delete] eat-semi-char-non-bound-keys))
-    ;; Don't forward M-o to the terminal
-    (setq eat-semi-char-non-bound-keys
-          (append (list
-                   [?\e ?o]
-                   )
-                  eat-semi-char-non-bound-keys))
-    (eat-update-semi-char-mode-map)
-    (eat-reload))
+    (setq vterm-max-scrollback 100000))
 
+  ;; For managing multiple vterm buffers
+  (use-package multi-vterm)
 #+end_src
 * Appearance
 The main theme

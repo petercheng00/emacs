@@ -105,17 +105,6 @@ The main theme
 #+end_src
 ** Modeline
 #+begin_src emacs-lisp
-  ;; Icons used by doom-modeline
-  (use-package all-the-icons)
-  (use-package all-the-icons-completion
-    :after (marginalia all-the-icons)
-    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
-    :init
-    (all-the-icons-completion-mode))
-  (use-package all-the-icons-dired
-    :config
-    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
-
   ;; Dired alternative
   (use-package dirvish
     :init
@@ -158,6 +147,9 @@ The main theme
   (use-package rainbow-delimiters
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+
+  ;; Icons
+  (use-package nerd-icons)
 #+end_src
 * File Management
 #+begin_src emacs-lisp

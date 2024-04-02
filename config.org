@@ -253,9 +253,9 @@ Turned off undo-tree history since the files get humongous. Should just figure o
 #+end_src
 * LSP
 Using eglot for lsp
-#+begin_src emacs-lisp
-  (add-hook 'prog-mode-hook 'eglot-ensure)
-#+end_src
+# #+begin_src emacs-lisp
+  ;; (add-hook 'prog-mode-hook 'eglot-ensure)
+# #+end_src
 * Completion
 #+begin_src emacs-lisp
   (use-package company

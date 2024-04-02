@@ -63,6 +63,11 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   ;; For native-comp, don't foreground the warnings buffer.
   (setq native-comp-async-report-warnings-errors 'silent)
+
+  ;; Copy to system clipboard.
+  (use-package clipetty
+    :ensure t
+    :hook (after-init . global-clipetty-mode))
 #+end_src
 * Vertico and friends
 #+begin_src emacs-lisp

@@ -325,9 +325,9 @@ Using eglot for lsp
     :config
     (setq rust-format-on-save t))
 #+end_src
-* Copilot
+* AI
 #+begin_src emacs-lisp
-  ;; Need these dependencies
+  ;; Need these dependencies for copilot
   (use-package dash)
   (use-package s)
   (use-package editorconfig)
@@ -339,4 +339,12 @@ Using eglot for lsp
   (define-key copilot-completion-map (kbd "C-g") 'copilot-clear-overlay)
 
   (add-hook 'prog-mode-hook 'copilot-mode)
+
+  (use-package ellama
+    :init
+    (setopt ellama-language "English")
+    (require 'llm-ollama)
+    (setopt ellama-provider
+            (make-llm-ollama
+             :chat-model "zephyr" :embedding-model "zephyr")))
 #+end_src

@@ -193,14 +193,15 @@ The main theme
   (add-hook 'compilation-filter-hook
             #'endless/colorize-compilation)
 
-  ;; Tree-sitter is part of emacs now, but this installs a bunch of languages.
-  (use-package tree-sitter-langs
-     :config
-     (global-tree-sitter-mode)
-     (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
-
   ;; For loading recently opened files.
   (recentf-mode 1)
+#+end_src
+csv mode
+#+begin_src emacs-lisp
+  (use-package csv-mode
+    :config
+    (add-hook 'csv-mode-hook 'csv-align-mode)
+    (add-hook 'csv-mode-hook 'csv-header-line))
 #+end_src
 * Org Mode
 (use-package org) should have been called prior to this file, in order to ensure the latest version of org is active.
@@ -253,9 +254,13 @@ Turned off undo-tree history since the files get humongous. Should just figure o
 #+end_src
 * LSP
 Using eglot for lsp
-# #+begin_src emacs-lisp
+#+begin_src emacs-lisp
   ;; (add-hook 'prog-mode-hook 'eglot-ensure)
-# #+end_src
+
+  (use-package eglot-booster
+    :after eglot
+    :config (eglot-booster-mode))
+#+end_src
 * Completion
 #+begin_src emacs-lisp
   (use-package company
@@ -323,7 +328,8 @@ Using eglot for lsp
 #+begin_src emacs-lisp
   (use-package rust-mode
     :config
-    (setq rust-format-on-save t))
+    (setq rust-format-on-save t)
+    (setq rust-mode-treesitter-derive t))
 #+end_src
 * AI
 #+begin_src emacs-lisp

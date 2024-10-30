@@ -22,11 +22,12 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   (bind-key "C-c SPC" 'avy-goto-line)
   (bind-key "C-c RET" 'copilot-accept-completion)
+  (bind-key "C-c /" 'undo-tree-redo)
   (bind-key "C-c a" 'org-agenda)
   (bind-key "C-c b" 'python-black-buffer)
   (bind-key "C-c c" 'copilot-complete)
   (bind-key "C-c e" 'consult-flymake)
-  (bind-key "C-c f" 'consult-find)
+  (bind-key "C-c f" 'consult-fd)
   (bind-key "C-c g" 'consult-ripgrep)
   (bind-key "C-c i" 'consult-imenu)
   (bind-key "C-c r" 'replace-string)
@@ -76,8 +77,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
     (vertico-mode)
     :config
     (setq vertico-cycle 't))
-  ;; (use-package vertico-directory
-  ;;  :after vertico)
+
   (use-package consult
     :init
     (setq xref-show-xrefs-function #'consult-xref
@@ -237,6 +237,9 @@ csv mode
   (use-package git-gutter
     :config
     (global-git-gutter-mode))
+
+  ;; Get git link to current line.
+  (use-package git-link)
 #+end_src
 * General Editing
 Turned off undo-tree history since the files get humongous. Should just figure out how to limit size
@@ -274,7 +277,6 @@ Using eglot for lsp
   (use-package company-box
     :config
     :hook (company-mode . company-box-mode))
-
 
   ;; Yasnippet for templated insertion
   (use-package yasnippet

@@ -70,6 +70,9 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (use-package clipetty
     :ensure t
     :hook (after-init . global-clipetty-mode))
+
+  ;; Save bookmarks to file always.
+  (setq bookmark-save-flag 1)
 #+end_src
 * Vertico and friends
 #+begin_src emacs-lisp
@@ -171,6 +174,9 @@ The main theme
 
   ;; Don't auto-split vertically
   (setq split-height-threshold nil)
+
+  ;; Don't pop up new windows for warnings
+  (setq display-warning-minimum-level :error)
 
   ;; Scroll compilation buffer until first error
   (setq compilation-scroll-output 'first-error)
@@ -365,6 +371,10 @@ Using eglot for lsp
               (when (member major-mode '(rust-mode rust-ts-mode))
                 (call-interactively 'rust-format-buffer))))
 #+end_src
+** Other mode support
+#+begin_src emacs-lisp
+  (use-package bazel)
+#+end_src
 * AI
 #+begin_src emacs-lisp
   ;; Need these dependencies for copilot
@@ -381,16 +391,16 @@ Using eglot for lsp
     (define-key copilot-completion-map (kbd "C-g") 'copilot-clear-overlay)
     (add-hook 'prog-mode-hook 'copilot-mode))
 
-  (use-package gptel
-    :config
-    (setq gptel-default-mode 'org-mode)
-    (setq
-     gptel-model 'llama3.2:latest
-     gptel-backend (gptel-make-ollama "Ollama"
-                     :host "localhost:11434"
-                     :stream t
-                     :models '(llama3.2:latest)))
-    )
+  ;; (use-package gptel
+  ;;   :config
+  ;;   (setq gptel-default-mode 'org-mode)
+  ;;   (setq
+  ;;    gptel-model 'llama3.2:latest
+  ;;    gptel-backend (gptel-make-ollama "Ollama"
+  ;;                    :host "localhost:11434"
+  ;;                    :stream t
+  ;;                    :models '(llama3.2:latest)))
+  ;;   )
 
 
 #+end_src

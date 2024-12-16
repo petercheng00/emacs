@@ -356,7 +356,7 @@ Using eglot for lsp
   ;; Black formatter
   (use-package python-black
     :config
-    :hook (python-mode . python-black-on-save-mode))
+    :hook (python-ts-mode . python-black-on-save-mode))
 #+end_src
 ** Typescript Development
 #+begin_src emacs-lisp

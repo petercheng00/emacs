@@ -1,0 +1,45 @@
+# Install dependencies
+sudo apt install -y autoconf build-essential texinfo
+sudo apt install -y libx11-dev libxpm-dev libjpeg-dev libpng-dev libgif-dev libtiff-dev libgtk-3-dev
+sudo apt install -y libgccjit-11-dev libgnutls28-dev libncurses-dev
+
+------------------------
+# tree-sitter
+cd ~/libraries
+git clone git@github.com:tree-sitter/tree-sitter.git
+cd tree-sitter
+sudo make install
+
+# Add this to .bashrc
+export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
+
+------------------------
+# build emacs
+cd ~/libraries
+git clone git@github.com:emacs-mirror/emacs.git
+cd emacs
+git checkout emacs-30.0.92
+./autogen.sh
+./configure --with-tree-sitter --with-native-compilation
+make -j8
+sudo LD_LIBRARY_PATH=/usr/local/lib make install
+
+----------------------
+# load my emacs config
+cd
+git clone git@github.com:petercheng00/emacs.git
+ln -s ~/emacs/.emacs ~/.emacs
+
+---------------------
+# Post-emacs setup
+
+# for vterm
+sudo apt install -y cmake libtool libtool-bin
+
+# copilot.el
+install node via https://nodejs.org/en/download/package-manager
+M-x copilot-install-server
+M-x copilot-login
+
+# lsp-booster
+get from https://github.com/blahgeek/emacs-lsp-booster/releases

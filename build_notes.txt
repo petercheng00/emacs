@@ -42,4 +42,7 @@ M-x copilot-install-server
 M-x copilot-login
 
 # lsp-booster
-get from https://github.com/blahgeek/emacs-lsp-booster/releases
+https://github.com/blahgeek/emacs-lsp-booster/releases
+
+# or lsp-bridge
+https://github.com/manateelazycat/lsp-bridge

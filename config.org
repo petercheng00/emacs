@@ -11,9 +11,8 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key* [f5] 'recompile)
   (bind-key [f11] 'toggle-frame-fullscreen)
 
-  (bind-key "M-," 'lsp-bridge-find-def-return)
-  (bind-key "M-." 'lsp-bridge-find-def)
-
+  (bind-key "M-," 'xref-go-back)
+  (bind-key "M-." 'xref-find-definitions)
   (bind-key "M-;" 'comment-line)
   (bind-key* "M-n" (lambda() (interactive) (scroll-up 1)))
   (bind-key "M-o" 'other-window)
@@ -27,7 +26,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c a" 'org-agenda)
   (bind-key "C-c b" 'consult-bookmark)
   (bind-key "C-c c" 'copilot-complete)
-  (bind-key "C-c e" 'lsp-bridge-diagnostic-list)
+  (bind-key "C-c e" 'consult-flymake)
   (bind-key "C-c f" 'consult-fd)
   (bind-key "C-c g" 'consult-ripgrep)
   (bind-key "C-c i" 'consult-imenu)
@@ -74,6 +73,11 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   ;; Save bookmarks to file always.
   (setq bookmark-save-flag 1)
+
+  ;; Makes tramp remote path use the remote's path.
+  (with-eval-after-load 'tramp
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+
 #+end_src
 * Vertico and friends
 #+begin_src emacs-lisp
@@ -245,9 +249,9 @@ csv mode
     )
 
   ;; Show git status per-line in the fringe
-  (use-package git-gutter
-    :config
-    (global-git-gutter-mode))
+  ;;(use-package git-gutter
+  ;;  :config
+  ;;  (global-git-gutter-mode))
 
   ;; Get git link to current line.
   (use-package git-link
@@ -291,40 +295,30 @@ Auto-manage treesitter modes
     (global-treesit-auto-mode))
 #+end_src
 * LSP
+Using eglot for lsp
 #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/libraries/lsp-bridge")
-    (unless (display-graphic-p)
-      (add-to-list 'load-path "~/libraries/emacs-popon")
-      (add-to-list 'load-path "~/libraries/acm-terminal"))
+  (add-hook 'prog-mode-hook 'eglot-ensure)
 
-
-    (add-hook 'emacs-startup-hook
-              (lambda ()
-                (require 'yasnippet)
-                (yas-global-mode 1)
-
-                (require 'lsp-bridge)
-                (global-lsp-bridge-mode)
-
-                (unless (display-graphic-p)
-                  (with-eval-after-load 'acm
-                    (require 'acm-terminal)))))
-
-    (setq lsp-bridge-enable-inlay-hint t)
-    (setq lsp-bridge-enable-completion-in-string t)
-    (setq lsp-bridge-enable-org-babel t)
-
-    (setq acm-backend-lsp-show-progress t)
-    (setq acm-backend-order '("copilot-candidates"
-                              "mode-first-part-candidates"
-                              "template-first-part-candidates"
-                              "template-second-part-candidates"
-                              "mode-second-part-candidates"))
-    (setq acm-enable-copilot t)
-    (setq acm-enable-search-file-words nil)
+  (use-package eglot-booster
+    :vc (:url "https://github.com/jdtsmith/eglot-booster.git"
+              :rev :newest)
+    :after eglot
+    :config (eglot-booster-mode))
 #+end_src
 * Completion
 #+begin_src emacs-lisp
+  (use-package company
+    :config
+    (global-company-mode)
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "C-n") #'company-select-next)
+    (define-key company-active-map (kbd "C-p") #'company-select-previous))
+
+  (use-package company-box
+    :config
+    :hook (company-mode . company-box-mode))
+
   ;; Yasnippet for templated insertion
   (use-package yasnippet
     :config
@@ -388,5 +382,34 @@ Auto-manage treesitter modes
 #+end_src
 * AI
 #+begin_src emacs-lisp
+  ;; Need these dependencies for copilot
+  (use-package dash)
+  (use-package s)
+  (use-package editorconfig)
+  (use-package jsonrpc)
+
+  (use-package copilot
+    :vc (:url "https://github.com/copilot-emacs/copilot.el.git"
+              :rev :newest
+              :branch "main")
+    :config
+    (define-key copilot-completion-map (kbd "C-c n") 'copilot-next-completion)
+    (define-key copilot-completion-map (kbd "C-c p") 'copilot-previous-completion)
+    (define-key copilot-completion-map (kbd "C-g") 'copilot-clear-overlay)
+    (add-hook 'prog-mode-hook 'copilot-mode))
+
   (use-package copilot-chat)
+
+  ;; (use-package gptel
+  ;;   :config
+  ;;   (setq gptel-default-mode 'org-mode)
+  ;;   (setq
+  ;;    gptel-model 'llama3.2:latest
+  ;;    gptel-backend (gptel-make-ollama "Ollama"
+  ;;                    :host "localhost:11434"
+  ;;                    :stream t
+  ;;                    :models '(llama3.2:latest)))
+  ;;   )
+
+
 #+end_src

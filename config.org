@@ -249,9 +249,9 @@ csv mode
     )
 
   ;; Show git status per-line in the fringe
-  ;;(use-package git-gutter
-  ;;  :config
-  ;;  (global-git-gutter-mode))
+  (use-package git-gutter
+    :config
+    (global-git-gutter-mode))
 
   ;; Get git link to current line.
   (use-package git-link
@@ -294,10 +294,13 @@ Auto-manage treesitter modes
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
 #+end_src
+#+begin_src emacs-lisp
+  (use-package rg)
+#+end_src
 * LSP
 Using eglot for lsp
 #+begin_src emacs-lisp
-  (add-hook 'prog-mode-hook 'eglot-ensure)
+  ;; (add-hook 'prog-mode-hook 'eglot-ensure)
 
   (use-package eglot-booster
     :vc (:url "https://github.com/jdtsmith/eglot-booster.git"

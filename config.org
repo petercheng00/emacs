@@ -1,7 +1,3 @@
-* Per-System Settings
-#+begin_src emacs-lisp
-  (setq compile-command (getenv "COMPILE_COMMAND"))
-#+end_src
 * Keybindings
 Using ~bind-key*~ will force precedence over keybinds from a mode map.
 #+begin_src emacs-lisp
@@ -14,37 +10,32 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "M-," 'xref-go-back)
   (bind-key "M-." 'xref-find-definitions)
   (bind-key "M-;" 'comment-line)
-  (bind-key* "M-n" (lambda() (interactive) (scroll-up 1)))
+  (bind-key "M-g" 'avy-goto-char-2)
+  (bind-key "M-l" 'avy-goto-line)
+  (bind-key* "M-n" 'scroll-up-line)
   (bind-key "M-o" 'other-window)
-  (bind-key* "M-p" (lambda() (interactive) (scroll-down 1)))
+  (bind-key* "M-p" 'scroll-down-line)
   (bind-key "M-y" 'consult-yank-pop)
   (bind-key "M-z" 'avy-zap-to-char-dwim)
 
-  (bind-key "C-c SPC" 'avy-goto-line)
+  (bind-key "C-s" 'consult-line)
+
   (bind-key "C-c RET" 'copilot-accept-completion)
-  (bind-key "C-c /" 'undo-tree-redo)
   (bind-key "C-c a" 'org-agenda)
-  (bind-key "C-c b" 'consult-bookmark)
-  (bind-key "C-c c" 'copilot-complete)
+  (bind-key "C-c c" 'org-capture)
   (bind-key "C-c e" 'consult-flymake)
   (bind-key "C-c f" 'consult-fd)
   (bind-key "C-c g" 'consult-ripgrep)
   (bind-key "C-c i" 'consult-imenu)
-  (bind-key "C-c m" 'consult-mark)
   (bind-key "C-c r" 'replace-string)
+  (bind-key "C-c v" 'vundo)
   (bind-key "C-c x" 'multi-vterm-next)
-  (bind-key "C-c z" 'avy-zap-to-char)
 
-  (bind-key "C-c C-SPC" 'avy-goto-char-2)
   (bind-key "C-c C-r" 'query-replace)
   (bind-key "C-c C-x" 'multi-vterm)
 
   (bind-key "C-x b" 'consult-buffer)
-  (bind-key "C-x d" 'dirvish-dwim)
   (bind-key "C-x g" 'magit-status)
-  (bind-key "C-x C-b" 'ibuffer)
-
-  (bind-key "C-s" 'consult-line)
 #+end_src
 
 * Emacs System Settings
@@ -70,9 +61,6 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (use-package clipetty
     :ensure t
     :hook (after-init . global-clipetty-mode))
-
-  ;; Save bookmarks to file always.
-  (setq bookmark-save-flag 1)
 
   ;; Makes tramp remote path use the remote's path.
   (with-eval-after-load 'tramp
@@ -121,12 +109,6 @@ The main theme
 #+end_src
 ** Modeline
 #+begin_src emacs-lisp
-  ;; Dired alternative
-  (use-package dirvish
-    :init
-    ;; Let Dirvish take over Dired globally
-    (dirvish-override-dired-mode))
-
   ;; Modeline theme.
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
@@ -207,23 +189,19 @@ The main theme
 
   ;; For loading recently opened files.
   (recentf-mode 1)
-#+end_src
-csv mode
-#+begin_src emacs-lisp
+
   (use-package csv-mode
     :config
     (add-hook 'csv-mode-hook 'csv-align-mode)
     (add-hook 'csv-mode-hook 'csv-header-line))
-#+end_src
-#+begin_src emacs-lisp
+
   (use-package markdown-mode)
 #+end_src
 * Org Mode
-(use-package org) should have been called prior to this file, in order to ensure the latest version of org is active.
-
 #+begin_src emacs-lisp
   ;; This makes indentation inside src blocks work
   (setq org-src-tab-acts-natively t)
+  (setq org-src-prserve-indentation t)
 
   ;; Word wrap
   (setq org-startup-truncated nil)
@@ -237,6 +215,23 @@ csv mode
 
   ;; Org agenda
   (setq org-agenda-files '("~/org/"))
+
+  ;; Org capture
+  (setq org-capture-templates
+        '(("t" "tasks" entry (file+headline "~/org/tasks.org" "Tasks")
+           "* TODO %?")))
+
+  (setq org-todo-keywords
+      '((sequence "TODO" "PROG" "|" "DONE")))
+
+  (use-package org-modern
+    :config
+    (with-eval-after-load 'org (global-org-modern-mode))
+    ;; The priority face looks nice.
+    (setq org-modern-todo-faces '(("PROG" . ,(plist-get org-modern-priority '(:face)))))
+    )
+
+
 #+end_src
 * Version Control
 #+begin_src emacs-lisp
@@ -256,51 +251,43 @@ csv mode
   ;; Get git link to current line.
   (use-package git-link
     :config
-    (defun git-link-with-branch (branch)
+    (defun git-link-with-branch (branch-name-arg)
       "Invoke `git-link', but with the `branch' name set to a different
-  branch than the one you're currently working on."
-      (interactive "P")
-      (let* ((default-remote-branch-name "main")
-             (git-link-current-branch-setting git-link-default-branch)
-             (git-link-default-branch (if branch
-                                          (completing-read
-                                           (format "Instead of '%s' branch replace with branch: " (git-link--branch))
-                                           (magit-list-branch-names))
-                                        default-remote-branch-name)))
+  branch than the one you're currently working on.
+  Prompts for a branch name."
+      (interactive
+       (list
+        (completing-read
+         (format "Replace current branch '%s' with branch: " (git-link--branch))
+         (magit-list-branch-names)
+         nil t nil nil (git-link--branch))))
+      (let* ((git-link-current-branch-setting git-link-default-branch)
+             (git-link-default-branch branch-name-arg))
         (setq current-prefix-arg nil)
         (call-interactively 'git-link)
         (setq git-link-default-branch git-link-current-branch-setting))))
 #+end_src
 * General Editing
-Turned off undo-tree history since the files get humongous. Should just figure out how to limit size
 #+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
   (global-subword-mode 1)
   (use-package avy)
   (use-package avy-zap)
-  (use-package undo-tree
-    :config
-    (global-undo-tree-mode)
-    (setq undo-tree-auto-save-history nil)
-    (setq undo-tree-history-directory-alist
-          (quote (("" . "~/.emacs.d/undo_hist")))))
-#+end_src
-Auto-manage treesitter modes
-#+begin_src emacs-lisp
   (use-package treesit-auto
     :custom
     (treesit-auto-install 'prompt)
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
-#+end_src
-#+begin_src emacs-lisp
   (use-package rg)
+  (use-package vundo)
 #+end_src
 * LSP
 Using eglot for lsp
 #+begin_src emacs-lisp
-  ;; (add-hook 'prog-mode-hook 'eglot-ensure)
+  (add-hook 'prog-mode-hook 'eglot-ensure)
+
+  (setq eglot-stay-out-of '(imenu))
 
   (use-package eglot-booster
     :vc (:url "https://github.com/jdtsmith/eglot-booster.git"
@@ -403,16 +390,11 @@ Using eglot for lsp
 
   (use-package copilot-chat)
 
-  ;; (use-package gptel
-  ;;   :config
-  ;;   (setq gptel-default-mode 'org-mode)
-  ;;   (setq
-  ;;    gptel-model 'llama3.2:latest
-  ;;    gptel-backend (gptel-make-ollama "Ollama"
-  ;;                    :host "localhost:11434"
-  ;;                    :stream t
-  ;;                    :models '(llama3.2:latest)))
-  ;;   )
+  (use-package gptel
+    :config
+    (setq gptel-model 'claude-3.7-sonnet
+      gptel-backend (gptel-make-gh-copilot "Copilot")
+      gptel-default-mode 'org-mode)))
 
 
 #+end_src

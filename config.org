@@ -202,7 +202,7 @@ The main theme
 #+begin_src emacs-lisp
   ;; This makes indentation inside src blocks work
   (setq org-src-tab-acts-natively t)
-  (setq org-src-prserve-indentation t)
+  (setq org-src-preserve-indentation t)
 
   ;; Word wrap
   (setq org-startup-truncated nil)
@@ -395,7 +395,7 @@ Using eglot for lsp
     :config
     (setq gptel-model 'claude-3.7-sonnet
       gptel-backend (gptel-make-gh-copilot "Copilot")
-      gptel-default-mode 'org-mode)))
+      gptel-default-mode 'org-mode))
 
 
 #+end_src

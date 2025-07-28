@@ -31,6 +31,7 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key "C-c v" 'vundo)
   (bind-key "C-c x" 'multi-vterm-next)
 
+  (bind-key "C-c C-g" 'deadgrep)
   (bind-key "C-c C-r" 'query-replace)
   (bind-key "C-c C-x" 'multi-vterm)
 
@@ -279,7 +280,7 @@ The main theme
     :config
     (treesit-auto-add-to-auto-mode-alist 'all)
     (global-treesit-auto-mode))
-  (use-package rg)
+  (use-package deadgrep)
   (use-package vundo)
 #+end_src
 * LSP

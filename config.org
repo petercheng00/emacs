@@ -67,6 +67,8 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (with-eval-after-load 'tramp
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
+  ;; Store way more recentf files.
+  (setq recentf-max-saved-items 5000)
 #+end_src
 * Vertico and friends
 #+begin_src emacs-lisp
@@ -95,7 +97,8 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   ;; Vterm is a term mode that integrates really nicely with emacs keybindings
   (use-package vterm
     :config
-    (setq vterm-max-scrollback 100000))
+    (setq vterm-max-scrollback 100000)
+    (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0))))
 
   ;; For managing multiple vterm buffers
   (use-package multi-vterm)
@@ -228,9 +231,15 @@ The main theme
   (use-package org-modern
     :config
     (with-eval-after-load 'org (global-org-modern-mode))
-    ;; The priority face looks nice.
-    (setq org-modern-todo-faces '(("PROG" . ,(plist-get org-modern-priority '(:face)))))
-    )
+    (setq org-modern-todo-faces
+      '(("PROG" . ((t (:foreground "#3F3F3F" :background "#F0DFAF" :weight bold))))))
+    (setq org-modern-priority-faces
+    (quote ((?A org-level-1)
+            (?B org-level-4)
+            (?C org-level-8)))))
+
+
+
 
 
 #+end_src
@@ -350,9 +359,12 @@ Using eglot for lsp
 ** Python Development
 #+begin_src emacs-lisp
   ;; Black formatter
-  (use-package python-black
-    :config
-    :hook (python-ts-mode . python-black-on-save-mode))
+  ;; (use-package python-black
+    ;; :config
+    ;; :hook (python-ts-mode . python-black-on-save-mode))
+(use-package ruff-format
+  :config
+  :hook (python-ts-mode . ruff-format-on-save-mode))
 #+end_src
 ** Typescript Development
 #+begin_src emacs-lisp
@@ -388,14 +400,4 @@ Using eglot for lsp
     (define-key copilot-completion-map (kbd "C-c p") 'copilot-previous-completion)
     (define-key copilot-completion-map (kbd "C-g") 'copilot-clear-overlay)
     (add-hook 'prog-mode-hook 'copilot-mode))
-
-  (use-package copilot-chat)
-
-  (use-package gptel
-    :config
-    (setq gptel-model 'claude-3.7-sonnet
-      gptel-backend (gptel-make-gh-copilot "Copilot")
-      gptel-default-mode 'org-mode))
-
-
 #+end_src

@@ -7,11 +7,11 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (bind-key* [f5] 'recompile)
   (bind-key [f11] 'toggle-frame-fullscreen)
 
+  (bind-key "M-/" 'minuet-complete-with-minibuffer)
   (bind-key "M-," 'xref-go-back)
   (bind-key "M-." 'xref-find-definitions)
   (bind-key "M-;" 'comment-line)
-  (bind-key "M-g" 'avy-goto-char-2)
-  (bind-key "M-l" 'avy-goto-line)
+  (bind-key "M-g" 'flash-jump)
   (bind-key* "M-n" 'scroll-up-line)
   (bind-key "M-o" 'other-window)
   (bind-key* "M-p" 'scroll-down-line)
@@ -20,7 +20,6 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
 
   (bind-key "C-s" 'consult-line)
 
-  (bind-key "C-c RET" 'copilot-accept-completion)
   (bind-key "C-c a" 'org-agenda)
   (bind-key "C-c c" 'org-capture)
   (bind-key "C-c e" 'consult-flymake)
@@ -98,7 +97,12 @@ Using ~bind-key*~ will force precedence over keybinds from a mode map.
   (use-package vterm
     :config
     (setq vterm-max-scrollback 100000)
-    (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0))))
+    (add-hook 'vterm-mode-hook (lambda () (display-line-numbers-mode 0)))
+    ;; So compilation errors are more readable.
+    (set-face-attribute 'vterm-color-bright-red  nil :foreground "#BC8383")
+    (set-face-attribute 'vterm-color-bright-blue nil :foreground "#8CD0D3"))
+
+
 
   ;; For managing multiple vterm buffers
   (use-package multi-vterm)
@@ -116,7 +120,9 @@ The main theme
   ;; Modeline theme.
   (use-package doom-modeline
     :init (doom-modeline-mode 1)
-    :config (setq doom-modeline-buffer-file-name-style 'relative-to-project))
+    :config
+    (setq doom-modeline-buffer-file-name-style 'truncate-nil)
+    (setq doom-modeline-vcs-max-length 50))
 
   ;; Flash modeline instead of bell sound
   (setq ring-bell-function
@@ -152,6 +158,11 @@ The main theme
 
   ;; Icons
   (use-package nerd-icons)
+
+  ;; Show indentation level
+  (use-package indent-bars
+    :hook ((org-mode python-mode python-ts-mode yaml-mode) . indent-bars-mode))
+
 #+end_src
 * File Management
 #+begin_src emacs-lisp
@@ -193,6 +204,7 @@ The main theme
 
   ;; For loading recently opened files.
   (recentf-mode 1)
+  (setq recentf-auto-cleanup 'never)
 
   (use-package csv-mode
     :config
@@ -249,6 +261,7 @@ The main theme
     :config
     (setq magit-log-arguments (quote ("--graph" "--color" "--decorate" "-n100")))
     (setq magit-diff-arguments (quote ("--ignore-space-change" "--ignore-all-space" "--no-ext-diff" "--stat")))
+    (setq magit-diff-visit-prefer-worktree t)
     (remove-hook 'magit-refs-sections-hook 'magit-insert-tags)
     (remove-hook 'magit-refs-sections-hook 'magit-insert-remote-branches)
     )
@@ -281,7 +294,6 @@ The main theme
 #+begin_src emacs-lisp
   (setq-default indent-tabs-mode nil)
   (global-subword-mode 1)
-  (use-package avy)
   (use-package avy-zap)
   (use-package treesit-auto
     :custom
@@ -291,19 +303,40 @@ The main theme
     (global-treesit-auto-mode))
   (use-package deadgrep)
   (use-package vundo)
+
+  (use-package flash
+    :commands (flash-jump flash-jump-continue
+               flash-treesitter)
+    :custom
+    (flash-multi-window t)
+    :config
+    ;; Search integration (labels during C-s, /, ?)
+    (require 'flash-isearch)
+    (flash-isearch-mode 1))
+
 #+end_src
 * LSP
 Using eglot for lsp
 #+begin_src emacs-lisp
-  (add-hook 'prog-mode-hook 'eglot-ensure)
+  (with-eval-after-load 'eglot
+    (setq eglot-workspace-configuration
+          '((:rust-analyzer
+             (:cachePriming (:enable :json-false))))))
 
   (setq eglot-stay-out-of '(imenu))
 
-  (use-package eglot-booster
-    :vc (:url "https://github.com/jdtsmith/eglot-booster.git"
-              :rev :newest)
-    :after eglot
-    :config (eglot-booster-mode))
+  ;; Kill eglot when switching branches to prevent hangs.
+  (with-eval-after-load 'magit
+    (defun my/magit-with-eglot-stopped (orig &rest args)
+      "Stop all Eglot servers before running ORIG."
+      (ignore-errors (eglot-shutdown-all))
+      (apply orig args))
+
+    (dolist (fn '(magit-checkout
+                  magit-branch-checkout
+                  magit-switch-branch))
+      (when (fboundp fn)
+        (advice-add fn :around #'my/magit-with-eglot-stopped))))
 #+end_src
 * Completion
 #+begin_src emacs-lisp
@@ -358,13 +391,13 @@ Using eglot for lsp
 #+end_src
 ** Python Development
 #+begin_src emacs-lisp
-  ;; Black formatter
-  ;; (use-package python-black
-    ;; :config
-    ;; :hook (python-ts-mode . python-black-on-save-mode))
-(use-package ruff-format
-  :config
-  :hook (python-ts-mode . ruff-format-on-save-mode))
+  (use-package ruff-format
+    :config
+    :hook (python-ts-mode . ruff-format-on-save-mode))
+
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode) . ("uvx" "ty" "server"))))
 #+end_src
 ** Typescript Development
 #+begin_src emacs-lisp
@@ -385,19 +418,37 @@ Using eglot for lsp
 #+end_src
 * AI
 #+begin_src emacs-lisp
-  ;; Need these dependencies for copilot
-  (use-package dash)
-  (use-package s)
-  (use-package editorconfig)
-  (use-package jsonrpc)
 
-  (use-package copilot
-    :vc (:url "https://github.com/copilot-emacs/copilot.el.git"
-              :rev :newest
-              :branch "main")
+(use-package minuet
     :config
-    (define-key copilot-completion-map (kbd "C-c n") 'copilot-next-completion)
-    (define-key copilot-completion-map (kbd "C-c p") 'copilot-previous-completion)
-    (define-key copilot-completion-map (kbd "C-g") 'copilot-clear-overlay)
-    (add-hook 'prog-mode-hook 'copilot-mode))
+    (setq minuet-provider 'openai-fim-compatible)
+    (setq minuet-n-completions 1)
+    (setq minuet-context-window 10000)
+    (setq minuet-show-error-message-on-minibuffer 't)
+
+    (plist-put minuet-openai-fim-compatible-options :end-point "http://localhost:8012/v1/completions")
+    ;; an arbitrary non-null environment variable as placeholder
+    (plist-put minuet-openai-fim-compatible-options :name "Llama.cpp")
+    (plist-put minuet-openai-fim-compatible-options :api-key "TERM")
+    ;; The model is set by the llama-cpp server and cannot be altered
+    ;; post-launch.
+    (plist-put minuet-openai-fim-compatible-options :model "PLACEHOLDER")
+
+    ;; Llama.cpp does not support the `suffix` option in FIM completion.
+    ;; Therefore, we must disable it and manually populate the special
+    ;; tokens required for FIM completion.
+    (minuet-set-nested-plist minuet-openai-fim-compatible-options nil :template :suffix)
+    (minuet-set-optional-options
+     minuet-openai-fim-compatible-options
+     :prompt
+     (defun minuet-llama-cpp-fim-qwen-prompt-function (ctx)
+         (format "<|fim_prefix|>%s\n%s<|fim_suffix|>%s<|fim_middle|>"
+                 (plist-get ctx :language-and-tab)
+                 (plist-get ctx :before-cursor)
+                 (plist-get ctx :after-cursor)))
+     :template)
+
+    (minuet-set-optional-options minuet-openai-fim-compatible-options :max_tokens 56))
+
+
 #+end_src
